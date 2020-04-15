@@ -1,0 +1,27 @@
+example_arena:
+  running: false
+  name: "实例召唤师峡谷"
+  team:
+    maxPlayers: 5
+    red:
+      spawnPoint: 
+      crystalPoint:
+      defensetowerPoint1:
+      defensetowerPoint2:
+      defensetowerPoint3:
+    blue:
+      spawnPoint: 
+      crystalPoint:
+      defensetowerPoint1:
+      defensetowerPoint2:
+      defensetowerPoint3:
+    crystal:
+      maxhp: 5000
+      atk: 800
+      atkcd: 3
+      recover: 50
+      recovercd: 5
+    defensetower: 
+      maxhp: 3000
+      atd: 500
+      atkcd: 3

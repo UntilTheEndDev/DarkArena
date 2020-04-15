@@ -8,15 +8,20 @@ import HamsterYDS.DarkArena.arena.normal.util.buildings.CentreCrystal;
 import HamsterYDS.DarkArena.arena.normal.util.buildings.DefenseTower;
 
 public class Team {
+	public static final int maxPlayer=5;
+	protected int players;
 	protected Location spawnPoint;
 	protected CentreCrystal centreCrystal;
 	protected List<DefenseTower> defenseTowers;
 	
-	public Team(Location spawnPoint, CentreCrystal centreCrystal, List<DefenseTower> defenseTowers) {
-		super();
+	public Team(int players, Location spawnPoint, CentreCrystal centreCrystal, List<DefenseTower> defenseTowers) {
+		this.players=players;
 		this.spawnPoint = spawnPoint;
 		this.centreCrystal = centreCrystal;
 		this.defenseTowers = defenseTowers;
+	}
+	public int getPlayers() {
+		return players;
 	}
 	public Location getSpawnPoint() {
 		return spawnPoint;

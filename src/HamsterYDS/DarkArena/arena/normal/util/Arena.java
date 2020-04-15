@@ -10,10 +10,10 @@ public class Arena {
 	protected Team red;
 	protected Team blue;
 	protected HashMap<String,TeamPlayer> players=new HashMap<String,TeamPlayer>();
-	protected Arena(String name,Team red,Team blue,HashMap<String,TeamPlayer> players) {
+	public Arena(String name,Team red,Team blue,HashMap<String,TeamPlayer> players) {
 		this.name=name;
 		this.red=red;
-		this.blue=blue;
+		this.blue=blue; 
 		this.players=players;
 	}
 	public String getName() {

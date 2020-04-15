@@ -3,7 +3,7 @@ package HamsterYDS.DarkArena.arena.normal.util.buildings;
 import org.bukkit.Location;
 
 public class CentreCrystal {
-	public static final int originHP=3000;
+	public static final int originHP=5000;
 	public static final int originATK=800;
 	public static final int originATKCD=3;
 	public static final int originRECOVER=50;
@@ -36,11 +36,11 @@ public class CentreCrystal {
 	public void setAtkcd(int atkcd) {
 		this.atkcd = atkcd;
 	}
-	public CentreCrystal(Location loc, int hp, int atk, int atkcd) {
+	public CentreCrystal(Location loc) {
 		this.loc=loc;
-		this.hp = hp;
-		this.atk = atk;
-		this.atkcd = atkcd;
+		this.hp = this.originHP;
+		this.atk = this.originATK;
+		this.atkcd = this.originATKCD;
 //		CentreCrystal instance=this;
 //		new BukkitRunnable() {
 //			@Override
