@@ -1,7 +1,9 @@
 package HamsterYDS.DarkArena.arena.normal.runner;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,12 +17,13 @@ import HamsterYDS.DarkArena.arena.normal.util.team.TeamPlayer;
 public class ArenaLoader {
 	public static final File arenaFile=new File(DarkArena.instance.getDataFolder(),"arenas.yml");
 	public static final YamlConfiguration arenaConfig=YamlConfiguration.loadConfiguration(arenaFile);
+	public static List<ArenaRunner> runningGames=new ArrayList<ArenaRunner>();
 	public static boolean runNormalArena(String name,HashMap<String,TeamPlayer> teamPlayers) {
 		if(arenaConfig.getBoolean(name+".running"))
 			return false;
 		arenaConfig.set(name+".running",false);
 		Arena arena=new Arena(name, new Team(name+".team.red"), new Team(name+".team.blue"), teamPlayers); 
-		//TODO
+		runningGames.add(new ArenaRunner(arena));
 		return true;
 	} 
 	public static Location loadLocation(String string) {
