@@ -15,19 +15,18 @@ public class TeamPlayer {
 	protected int deaths;
 	protected int kills;
 	protected int assists;
-	public TeamPlayer(Team team, int economy, int hp, int maxhp, int pp, int maxpp, PlayerRole role, PlayerStat stat,
-			int deaths, int kills, int assists) {
+	public TeamPlayer(Team team, int hp, int maxhp, int pp, int maxpp, PlayerRole role, PlayerStat stat) {
 		this.team = team;
-		this.economy = economy;
-		this.hp = hp;
-		this.maxhp = maxhp;
-		this.pp = pp;
-		this.maxpp = maxpp;
-		this.role = role;
-		this.stat = stat;
-		this.deaths = deaths;
-		this.kills = kills;
-		this.assists = assists;
+		this.economy = 0;
+		this.hp = hp;//TODO
+		this.maxhp = maxhp;//TODO
+		this.pp = pp;//TODO
+		this.maxpp = maxpp;//TODO
+		this.role = role;//TODO
+		this.stat = stat;//TODO
+		this.deaths = 0;
+		this.kills = 0;
+		this.assists = 0;
 	}
 	public Team getTeam() {
 		return team;

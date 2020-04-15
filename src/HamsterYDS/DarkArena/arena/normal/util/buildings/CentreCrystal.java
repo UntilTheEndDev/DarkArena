@@ -2,6 +2,8 @@ package HamsterYDS.DarkArena.arena.normal.util.buildings;
 
 import org.bukkit.Location;
 
+import HamsterYDS.DarkArena.arena.normal.runner.ArenaLoader;
+
 public class CentreCrystal {
 	public static final int originHP=5000;
 	public static final int originATK=800;
@@ -24,23 +26,9 @@ public class CentreCrystal {
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
-	public int getAtk() {
-		return atk;
-	}
-	public void setAtk(int atk) {
-		this.atk = atk;
-	}
-	public int getAtkcd() {
-		return atkcd;
-	}
-	public void setAtkcd(int atkcd) {
-		this.atkcd = atkcd;
-	}
-	public CentreCrystal(Location loc) {
-		this.loc=loc;
+	public CentreCrystal(String name) {
+		this.loc=ArenaLoader.loadLocation(name+".crystalPoint");
 		this.hp = this.originHP;
-		this.atk = this.originATK;
-		this.atkcd = this.originATKCD;
 //		CentreCrystal instance=this;
 //		new BukkitRunnable() {
 //			@Override

@@ -1,9 +1,11 @@
 package HamsterYDS.DarkArena.arena.normal.util.team;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
 
+import HamsterYDS.DarkArena.arena.normal.runner.ArenaLoader;
 import HamsterYDS.DarkArena.arena.normal.util.buildings.CentreCrystal;
 import HamsterYDS.DarkArena.arena.normal.util.buildings.DefenseTower;
 
@@ -14,10 +16,14 @@ public class Team {
 	protected CentreCrystal centreCrystal;
 	protected List<DefenseTower> defenseTowers;
 	
-	public Team(int players, Location spawnPoint, CentreCrystal centreCrystal, List<DefenseTower> defenseTowers) {
-		this.players=players;
-		this.spawnPoint = spawnPoint;
-		this.centreCrystal = centreCrystal;
+	public Team(String name) {
+		this.spawnPoint = ArenaLoader.loadLocation(name+".spawnPoint");
+		this.centreCrystal = new CentreCrystal(name);
+		
+		List<DefenseTower> defenseTowers=new ArrayList<DefenseTower>();
+		defenseTowers.add(new DefenseTower(name,1));
+		defenseTowers.add(new DefenseTower(name,2));
+		defenseTowers.add(new DefenseTower(name,3));
 		this.defenseTowers = defenseTowers;
 	}
 	public int getPlayers() {
