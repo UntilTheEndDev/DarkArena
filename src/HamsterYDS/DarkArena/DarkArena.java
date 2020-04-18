@@ -1,4 +1,4 @@
-package HamsterYDS.DarkArena;
+package hamsteryds.darkarena;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
