@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -76,14 +77,18 @@ public class WarlordManager {
 				(teamType == TeamType.BLUE) ? teams.get(arenaId).get(0) : teams.get(arenaId).get(1), false));
 		
 		if (playerMap.keySet().size()*2 >= maxPlayers) {
-			if(isCounting.get(arenaId)) return true;
+			if(isCounting.containsKey(arenaId))
+				if(isCounting.get(arenaId)) 
+					return true;
 			isCounting.remove(arenaId);
 			isCounting.put(arenaId,true);
 			new BukkitRunnable() {
-				int cnt=60;
+				int cnt=10;
 				@Override
 				public void run() {
+					cnt--;
 					if(cnt<=0) {
+						isCounting.remove(arenaId);
 						startArena(arenaId);
 						cancel();
 						return;
@@ -109,9 +114,6 @@ public class WarlordManager {
 			return false;
 		int maxPlayers = arenas.get(arenaId).maxPlayer;
 		HashMap<String, WarlordPlayer> playerMap = players.get(arenaId);
-		if (playerMap.keySet().size() * 2 <= maxPlayers) {
-			return false;
-		}
 		arenas.get(arenaId).isWaiting = false;
 		arenas.get(arenaId).isRunning = true;
 		for (String name : playerMap.keySet()) {
@@ -123,6 +125,8 @@ public class WarlordManager {
 				player.sendMessage("比赛开始"); 
 			}
 		}
+		teams.get(arenaId).get(0).currentFlagLocation.getBlock().setType(Material.BEACON);
+		teams.get(arenaId).get(1).currentFlagLocation.getBlock().setType(Material.BEACON);
 		new BukkitRunnable() {
 			int cnt = 0;
 
