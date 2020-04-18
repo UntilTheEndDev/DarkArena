@@ -1,7 +1,7 @@
 name: DarkArena
 version: 1.0.0
 authors: [HamsterYDS]
-main: hamsteryds.darkarena.DarkArena
+main: HamsterYDS.darkarena.DarkArena
 commands:
-  darkarena:
-    usage: /darkarena
+  warlord:
+    usage: /warlord
