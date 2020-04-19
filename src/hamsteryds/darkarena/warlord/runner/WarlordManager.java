@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
@@ -46,8 +45,8 @@ public class WarlordManager {
 				new WarlordArena(arenaId, true, false, arenaLoader.getLong("arenas." + arenaId + ".maxPeriod"),
 						arenaLoader.getInt("arenas." + arenaId + ".maxPlayer")));
 		List<WarlordTeam> initTeams = new ArrayList<WarlordTeam>();
-		initTeams.add(new WarlordTeam(loadLocation("arenas." + arenaId + ".spawnpoint.red"), 0, 0));
-		initTeams.add(new WarlordTeam(loadLocation("arenas." + arenaId + ".spawnpoint.blue"), 0, 0));
+		initTeams.add(new WarlordTeam(loadLocation("arenas." + arenaId + ".spawnpoint.red"), 0));
+		initTeams.add(new WarlordTeam(loadLocation("arenas." + arenaId + ".spawnpoint.blue"), 0));
 		teams.put(arenaId, initTeams);
 		players.put(arenaId, new HashMap<String, WarlordPlayer>());
 	}
@@ -130,17 +129,10 @@ public class WarlordManager {
 		teams.get(arenaId).get(0).currentFlagLocation.getBlock().setType(Material.BEACON);
 		teams.get(arenaId).get(1).currentFlagLocation.getBlock().setType(Material.BEACON);
 		new BukkitRunnable() {
-			int cnt = 0;
-
 			@Override
 			public void run() {
-				for(String name: players.get(arenaId).keySet()) {
-					Player player=Bukkit.getPlayer(name);
-					PlayerInventory inv=player.getInventory();
-					player.setBedSpawnLocation(players.get(arenaId).get(name).enemy.currentFlagLocation); 
-				}
 				if (arenas.get(arenaId).isRunning)
-					if (cnt++ >= arenas.get(arenaId).lastTime) {
+					if (arenas.get(arenaId).lastTime--<=0) {
 						stopArena(arenaId);
 						cancel();
 					}
@@ -175,8 +167,6 @@ public class WarlordManager {
 		HashMap<String, WarlordPlayer> currentPlayers = players.get(arenaId);
 		List<String> winners = new ArrayList<String>();
 		List<String> losers = new ArrayList<String>();
-		int flag1 = currentTeams.get(0).currentFlags;
-		int flag2 = currentTeams.get(1).currentFlags;
 		int score1 = currentTeams.get(0).currentScore;
 		int score2 = currentTeams.get(1).currentScore;
 		for (String name : currentPlayers.keySet()) {
@@ -187,10 +177,7 @@ public class WarlordManager {
 				losers.add(name);
 		}
 		boolean flag = false;
-		if (flag1 == flag2)
-			if (score1 < score2)
-				flag = true;
-		if (flag1 < flag2)
+		if (score1 < score2)
 			flag = true;
 		if (flag) {
 			List<String> tmp = new ArrayList<String>(winners);

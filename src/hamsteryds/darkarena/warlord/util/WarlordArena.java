@@ -155,7 +155,7 @@ public class WarlordArena implements Listener {
 				Location loc = block.getLocation();
 				if (pl.isCarryingFlag) {
 					if (loc.distance(pl.team.currentFlagLocation) <= 1) {
-						pl.team.currentFlags++;
+						pl.team.currentScore+=250;
 						pl.team.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.enemy.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.isCarryingFlag = false;
@@ -170,8 +170,6 @@ public class WarlordArena implements Listener {
 
 						}.runTaskLater(DarkArena.instance, 200L);
 						player.sendMessage("您成功为队伍赢得1分");
-						if (pl.team.currentFlags >= 3)
-							WarlordManager.stopArena(this.arenaId);
 						for(String name:WarlordManager.players.get(this.arenaId).keySet()) {
 							Player gamePlayer=Bukkit.getPlayer(name);
 							gamePlayer.sendMessage(pl.name+"夺取并带回了敌方的战旗，为战队赢得了一分！");
@@ -219,6 +217,8 @@ public class WarlordArena implements Listener {
 					.containsKey(pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1))) {
 				WarlordManager.players.get(this.arenaId)
 						.get(pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1)).kill++;
+				WarlordManager.players.get(this.arenaId)
+				.get(pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1)).team.currentScore+=5;
 				killer = pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1);
 			}
 			int highestAmount = -1;
