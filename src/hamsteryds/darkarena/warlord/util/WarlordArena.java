@@ -6,9 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -33,7 +36,10 @@ public class WarlordArena implements Listener {
 		this.lastTime = lastTime;
 		this.maxPlayer = maxPlayer;
 		Bukkit.getServer().getPluginManager().registerEvents(this, DarkArena.instance);
-		new ScaleBalancer().runTaskTimer(DarkArena.instance, 0L, 10L);
+	}
+
+	public void unRegEvents() {
+		HandlerList.unregisterAll(this);
 	}
 
 	public static HashMap<String, String> rejoinDatas = new HashMap<String, String>();
@@ -104,7 +110,12 @@ public class WarlordArena implements Listener {
 				event.setCancelled(true);
 				return;
 			}
+
 			WarlordPlayer pl = WarlordManager.players.get(this.arenaId).get(player.getName());
+			if (player.getLocation().getWorld() != pl.team.spawnLocation.getWorld()){
+				WarlordManager.quitArena(player, arenaId);
+				return;
+			}
 			if (event.getClickedBlock() != null) {
 				Block block = event.getClickedBlock();
 				Location loc = block.getLocation();
@@ -112,6 +123,14 @@ public class WarlordArena implements Listener {
 					block.setType(Material.AIR);
 					pl.team.spawnLocation.getBlock().setType(Material.BEACON);
 					player.sendMessage("您成功夺回了旗帜");
+					for(String name:WarlordManager.players.get(this.arenaId).keySet()) {
+						Player gamePlayer=Bukkit.getPlayer(name);
+						if(WarlordManager.players.get(this.arenaId).get(name).enemy==pl.team) {
+							gamePlayer.sendMessage("旗帜被对方玩家"+pl.name+"夺回！");
+						}else {
+							gamePlayer.sendMessage(pl.name+"夺回了旗帜！");
+						}
+					}
 					// TODO 夺回旗帜
 				}
 				if ((!pl.isCarryingFlag) && loc.distance(pl.enemy.currentFlagLocation) <= 1
@@ -120,6 +139,14 @@ public class WarlordArena implements Listener {
 					block.setType(Material.AIR);
 					player.sendMessage("您成功抢夺了旗帜");
 					// TODO 抢夺旗帜
+					for(String name:WarlordManager.players.get(this.arenaId).keySet()) {
+						Player gamePlayer=Bukkit.getPlayer(name);
+						if(WarlordManager.players.get(this.arenaId).get(name).enemy==pl.team) {
+							gamePlayer.sendMessage(pl.name+"夺取了你队的旗帜，快去拦截！");
+						}else {
+							gamePlayer.sendMessage(pl.name+"拿到了敌对的旗帜，快去掩护他！");
+						}
+					}
 				}
 				event.setCancelled(true);
 			}
@@ -131,7 +158,7 @@ public class WarlordArena implements Listener {
 						pl.team.currentFlags++;
 						pl.team.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.enemy.currentFlagLocation.getBlock().setType(Material.AIR);
-						pl.isCarryingFlag=false;
+						pl.isCarryingFlag = false;
 						new BukkitRunnable() {
 							@Override
 							public void run() {
@@ -145,7 +172,11 @@ public class WarlordArena implements Listener {
 						player.sendMessage("您成功为队伍赢得1分");
 						if (pl.team.currentFlags >= 3)
 							WarlordManager.stopArena(this.arenaId);
-
+						for(String name:WarlordManager.players.get(this.arenaId).keySet()) {
+							Player gamePlayer=Bukkit.getPlayer(name);
+							gamePlayer.sendMessage(pl.name+"夺取并带回了敌方的战旗，为战队赢得了一分！");
+							gamePlayer.sendMessage("旗帜将在10秒钟后重新生成！");
+						}
 						// TODO 抢夺旗帜成功
 					}
 					event.setCancelled(true);
@@ -160,11 +191,15 @@ public class WarlordArena implements Listener {
 		if (WarlordManager.players.get(this.arenaId).containsKey(player.getName())) {
 			WarlordPlayer pl = WarlordManager.players.get(this.arenaId).get(player.getName());
 			if (pl.isCarryingFlag) {
-				System.out.print("awa");
 				Location death = player.getLocation().getBlock().getLocation();
 				pl.enemy.currentFlagLocation = death;
 				player.getLocation().getBlock().setType(Material.BEACON);
 				pl.isCarryingFlag = false;
+				
+				for(String name:WarlordManager.players.get(this.arenaId).keySet()) {
+					Player gamePlayer=Bukkit.getPlayer(name);
+					gamePlayer.sendMessage("玩家"+pl.name+"掉落了旗帜！");
+				}
 				new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -178,22 +213,51 @@ public class WarlordArena implements Listener {
 				}.runTaskLater(DarkArena.instance, 400L);
 				return;
 			}
+			pl.death++;
+			String killer = "";
+			if (WarlordManager.players.get(this.arenaId)
+					.containsKey(pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1))) {
+				WarlordManager.players.get(this.arenaId)
+						.get(pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1)).kill++;
+				killer = pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1);
+			}
+			int highestAmount = -1;
+			String assist = "";
+			for (String damager : pl.attackAmountStamps.keySet()) {
+				if (damager.equalsIgnoreCase(killer))
+					continue;
+				if (pl.attackAmountStamps.get(damager) >= highestAmount) {
+					assist = damager;
+					highestAmount = pl.attackAmountStamps.get(damager);
+				}
+			}
+			if (WarlordManager.players.get(this.arenaId).containsKey(assist))
+				WarlordManager.players.get(this.arenaId).get(assist).assist++;
+			pl.attackAmountStamps.clear();
+			pl.attackTimeStamps.clear();
 		}
 	}
 
-	public class ScaleBalancer extends BukkitRunnable {
-		@Override
-		public void run() {
-			if (!isRunning) {
-				cancel();
+	@EventHandler
+	public void onATK(EntityDamageByEntityEvent event) {
+		Entity damager = event.getDamager();
+		Entity damagee = event.getEntity();
+		if (WarlordManager.players.get(this.arenaId).containsKey(damager.getName())
+				&& WarlordManager.players.get(this.arenaId).containsKey(damagee.getName())) {
+			event.setCancelled(true);
+			if (WarlordManager.players.get(this.arenaId).get(damager.getName()).team == WarlordManager.players
+					.get(this.arenaId).get(damagee.getName()).team)
 				return;
-			}
-			for (String name : WarlordManager.players.get(arenaId).keySet()) {
-				WarlordPlayer pl = WarlordManager.players.get(arenaId).get(name);
-				Player player = Bukkit.getPlayer(name);
-				player.setHealth(pl.health / 200);
-				player.setFoodLevel(pl.magicka / 10);
-			}
+			WarlordPlayer pl = WarlordManager.players.get(this.arenaId).get(damagee.getName());
+			pl.health -= event.getDamage() * 200;
+			pl.attackTimeStamps.add(damager.getName());
+			int currentATK = pl.attackAmountStamps.containsKey(damager.getName())
+					? pl.attackAmountStamps.get(damager.getName())
+					: 0;
+			pl.attackAmountStamps.remove(damager.getName());
+			pl.attackAmountStamps.put(damager.getName(), (int) (currentATK + event.getDamage() * 200));
+			WarlordManager.players.get(this.arenaId).get(damager.getName()).totalATK += event.getDamage() * 200;
 		}
 	}
+
 }
