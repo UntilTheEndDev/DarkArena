@@ -97,7 +97,7 @@ public class WarlordManager {
 					}
 					for (String name : playerMap.keySet()) {
 						Player player = Bukkit.getPlayer(name);
-						player.sendMessage("比赛将在" + cnt + "秒后开始");
+						player.sendMessage("§6[战争领主]§r比赛将在" + cnt + "秒后开始");
 					}
 				}
 
@@ -124,7 +124,7 @@ public class WarlordManager {
 				playerMap.remove(name);
 			else {
 				player.teleport(playerMap.get(name).team.spawnLocation);
-				player.sendMessage("比赛开始");
+				player.sendMessage("§6[战争领主]§r比赛开始");
 			}
 		}
 		new ScaleBalancer(arenaId).runTaskTimer(DarkArena.instance, 0L, 10L);
@@ -199,14 +199,14 @@ public class WarlordManager {
 	public static void prideLoser(List<String> winners) {
 		for (String name : winners) {
 			Player player = Bukkit.getPlayer(name);
-			player.sendMessage("您的队伍获胜！");
+			player.sendMessage("§6[战争领主]§r您的队伍获胜！");
 		}
 	}
 
 	public static void prideWinner(List<String> losers) {
 		for (String name : losers) {
 			Player player = Bukkit.getPlayer(name);
-			player.sendMessage("您的队伍失败！");
+			player.sendMessage("§6[战争领主]§r您的队伍失败！");
 		}
 	}
 }
