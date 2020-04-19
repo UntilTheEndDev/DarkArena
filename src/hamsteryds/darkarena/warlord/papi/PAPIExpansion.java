@@ -12,19 +12,19 @@ public class PAPIExpansion extends PlaceholderExpansion {
 	@Override
 	public String getAuthor() {
 		// TODO Auto-generated method stub
-		return null;
+		return "南外丶仓鼠";
 	}
 
 	@Override
 	public String getIdentifier() {
 		// TODO Auto-generated method stub
-		return null;
+		return "warlord";
 	}
 
 	@Override
 	public String getVersion() {
 		// TODO Auto-generated method stub
-		return null;
+		return "1.0";
 	}
 
 	public String onPlaceholderRequest(Player player, String identifier) {
