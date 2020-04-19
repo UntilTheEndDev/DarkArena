@@ -14,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -81,26 +80,6 @@ public class WarlordArena implements Listener {
 					player.teleport(loc);
 				}
 			}.runTaskLater(DarkArena.instance, 2L);
-		}
-	}
-
-	@EventHandler
-	public void onChangeWorld(PlayerChangedWorldEvent event) {
-		Player player = event.getPlayer();
-		if (WarlordManager.players.get(this.arenaId).containsKey(player.getName())) {
-			rejoinDatas.remove(player.getName());
-			rejoinDatas.put(player.getName(), this.arenaId);
-
-			rejoinTeams.remove(player.getName());
-			rejoinTeams.put(player.getName(), WarlordManager.players.get(this.arenaId).get(player.getName()));
-
-			WarlordManager.players.get(this.arenaId).remove(player.getName());
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					rejoinDatas.remove(player.getName());
-				}
-			}.runTaskLaterAsynchronously(DarkArena.instance, 600 * 20L);
 		}
 	}
 
@@ -193,7 +172,13 @@ public class WarlordArena implements Listener {
 		Player player = event.getPlayer();
 		if (WarlordManager.players.get(this.arenaId).containsKey(player.getName())) {
 			WarlordPlayer pl = WarlordManager.players.get(this.arenaId).get(player.getName());
-			event.setRespawnLocation(pl.team.spawnLocation);
+			new BukkitRunnable() {
+
+				@Override
+				public void run() {
+					player.teleport(pl.team.spawnLocation);
+				}
+			}.runTaskLater(DarkArena.instance,15L);
 		}
 	}
 
