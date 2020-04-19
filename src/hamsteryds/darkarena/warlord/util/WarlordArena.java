@@ -100,9 +100,11 @@ public class WarlordArena implements Listener {
 			if (event.getClickedBlock() != null) {
 				Block block = event.getClickedBlock();
 				Location loc = block.getLocation();
-				if (loc == pl.team.currentFlagLocation && pl.team.currentFlagLocation != pl.team.spawnLocation) {
+				if (loc.distance(pl.team.currentFlagLocation)<=1 && block.getType()==Material.BEACON
+						&&pl.team.currentFlagLocation.distance(pl.team.spawnLocation)>1) {
 					block.setType(Material.AIR);
 					pl.team.spawnLocation.getBlock().setType(Material.BEACON);
+					pl.team.currentFlagLocation=pl.team.spawnLocation;
 					player.sendMessage("§6[战争领主]§r您成功夺回了旗帜");
 					for (String name : WarlordManager.players.get(this.arenaId).keySet()) {
 						Player gamePlayer = Bukkit.getPlayer(name);
@@ -154,7 +156,7 @@ public class WarlordArena implements Listener {
 						player.sendMessage("§6[战争领主]§r您成功为队伍赢得1分");
 						for (String name : WarlordManager.players.get(this.arenaId).keySet()) {
 							Player gamePlayer = Bukkit.getPlayer(name);
-							gamePlayer.sendMessage(pl.name + "§6[战争领主]§r夺取并带回了敌方的战旗，为战队赢得了一分！");
+							gamePlayer.sendMessage("§6[战争领主]§r" + pl.name + "夺取并带回了敌方的战旗，为战队赢得了250分！");
 							gamePlayer.sendMessage("§6[战争领主]§r旗帜将在10秒钟后重新生成！");
 						}
 						// TODO 抢夺旗帜成功
