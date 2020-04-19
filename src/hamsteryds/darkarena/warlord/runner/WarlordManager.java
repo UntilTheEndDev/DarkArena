@@ -60,8 +60,8 @@ public class WarlordManager {
 		return loc;
 	}
 
-	private static HashMap<String,Boolean> isCounting=new HashMap<String,Boolean>();
-	
+	private static HashMap<String, Boolean> isCounting = new HashMap<String, Boolean>();
+
 	public static boolean joinArena(Player player, String arenaId, TeamType teamType) {
 		if (!arenas.get(arenaId).isWaiting)
 			return false;
@@ -70,38 +70,40 @@ public class WarlordManager {
 		if (playerMap.keySet().size() >= maxPlayers) {
 			return false;
 		}
-		
+
 		WarlordTeam team = (teamType == TeamType.RED) ? teams.get(arenaId).get(0) : teams.get(arenaId).get(1);
-		players.get(arenaId).put(player.getName(), new WarlordPlayer((int) player.getHealth() * 200,
-				player.getFoodLevel() * 10, 0, 0, 0, arenaId, player.getName(), team, 
-				(teamType == TeamType.BLUE) ? teams.get(arenaId).get(0) : teams.get(arenaId).get(1), false));
-		
-		if (playerMap.keySet().size()*2 >= maxPlayers) {
-			if(isCounting.containsKey(arenaId))
-				if(isCounting.get(arenaId)) 
+		players.get(arenaId).put(player.getName(),
+				new WarlordPlayer((int) player.getHealth() * 200, player.getFoodLevel() * 10, 0, 0, 0, arenaId,
+						player.getName(), team,
+						(teamType == TeamType.BLUE) ? teams.get(arenaId).get(0) : teams.get(arenaId).get(1), false));
+		player.setBedSpawnLocation(team.spawnLocation);
+		if (playerMap.keySet().size() * 2 >= maxPlayers) {
+			if (isCounting.containsKey(arenaId))
+				if (isCounting.get(arenaId))
 					return true;
 			isCounting.remove(arenaId);
-			isCounting.put(arenaId,true);
+			isCounting.put(arenaId, true);
 			new BukkitRunnable() {
-				int cnt=10;
+				int cnt = 120;
+
 				@Override
 				public void run() {
 					cnt--;
-					if(cnt<=0) {
+					if (cnt <= 0) {
 						isCounting.remove(arenaId);
 						startArena(arenaId);
 						cancel();
 						return;
 					}
-					for(String name:playerMap.keySet()) {
-						Player player=Bukkit.getPlayer(name);
-						player.sendMessage("比赛将在"+cnt+"秒后开始"); 
+					for (String name : playerMap.keySet()) {
+						Player player = Bukkit.getPlayer(name);
+						player.sendMessage("比赛将在" + cnt + "秒后开始");
 					}
 				}
-				
-			}.runTaskTimer(DarkArena.instance,0L,20L);
+
+			}.runTaskTimer(DarkArena.instance, 0L, 20L);
 		}
-		
+
 		return true;
 	}
 
@@ -122,7 +124,7 @@ public class WarlordManager {
 				playerMap.remove(name);
 			else {
 				player.teleport(playerMap.get(name).team.spawnLocation);
-				player.sendMessage("比赛开始"); 
+				player.sendMessage("比赛开始");
 			}
 		}
 		new ScaleBalancer(arenaId).runTaskTimer(DarkArena.instance, 0L, 10L);
@@ -132,7 +134,7 @@ public class WarlordManager {
 			@Override
 			public void run() {
 				if (arenas.get(arenaId).isRunning)
-					if (arenas.get(arenaId).lastTime--<=0) {
+					if (arenas.get(arenaId).lastTime-- <= 0) {
 						stopArena(arenaId);
 						cancel();
 					}
@@ -144,9 +146,11 @@ public class WarlordManager {
 
 	public static class ScaleBalancer extends BukkitRunnable {
 		String arenaId;
+
 		public ScaleBalancer(String arenaId) {
-			this.arenaId=arenaId;
+			this.arenaId = arenaId;
 		}
+
 		@Override
 		public void run() {
 			if (!arenas.get(arenaId).isRunning) {
@@ -156,11 +160,11 @@ public class WarlordManager {
 			for (String name : WarlordManager.players.get(arenaId).keySet()) {
 				WarlordPlayer pl = WarlordManager.players.get(arenaId).get(name);
 				Player player = Bukkit.getPlayer(name);
-				player.setHealth(pl.health / 200);
 				player.setFoodLevel(pl.magicka / 10);
 			}
 		}
 	}
+
 	public static void stopArena(String arenaId) {
 		arenas.get(arenaId).unRegEvents();
 		List<WarlordTeam> currentTeams = teams.get(arenaId);
@@ -193,15 +197,15 @@ public class WarlordManager {
 	}
 
 	public static void prideLoser(List<String> winners) {
-		for(String name:winners) {
-			Player player=Bukkit.getPlayer(name);
+		for (String name : winners) {
+			Player player = Bukkit.getPlayer(name);
 			player.sendMessage("您的队伍获胜！");
 		}
 	}
 
 	public static void prideWinner(List<String> losers) {
-		for(String name:losers) {
-			Player player=Bukkit.getPlayer(name);
+		for (String name : losers) {
+			Player player = Bukkit.getPlayer(name);
 			player.sendMessage("您的队伍失败！");
 		}
 	}

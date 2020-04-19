@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -157,6 +158,7 @@ public class WarlordArena implements Listener {
 				if (pl.isCarryingFlag) {
 					if (loc.distance(pl.team.currentFlagLocation) <= 1) {
 						pl.team.currentScore += 250;
+						
 						pl.team.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.enemy.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.isCarryingFlag = false;
@@ -177,6 +179,8 @@ public class WarlordArena implements Listener {
 							gamePlayer.sendMessage("旗帜将在10秒钟后重新生成！");
 						}
 						// TODO 抢夺旗帜成功
+						if(pl.team.currentScore>=1000)
+							WarlordManager.stopArena(arenaId);
 					}
 					event.setCancelled(true);
 				}
@@ -231,6 +235,9 @@ public class WarlordArena implements Listener {
 						.get(pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1)).kill++;
 				WarlordManager.players.get(this.arenaId)
 						.get(pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1)).team.currentScore += 5;
+				if (WarlordManager.players.get(this.arenaId)
+						.get(pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1)).team.currentScore >= 1000)
+					WarlordManager.stopArena(arenaId);
 				killer = pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1);
 			}
 			int highestAmount = -1;
@@ -248,11 +255,10 @@ public class WarlordArena implements Listener {
 			pl.attackAmountStamps.clear();
 			pl.attackTimeStamps.clear();
 		}
-		player.spigot().respawn();
 	}
 
 	@EventHandler
-	public void onATK(EntityDamageByEntityEvent event) {
+	public void onHumanATK(EntityDamageByEntityEvent event) {
 		Entity damager = event.getDamager();
 		Entity damagee = event.getEntity();
 		if (WarlordManager.players.get(this.arenaId).containsKey(damager.getName())
@@ -272,6 +278,15 @@ public class WarlordArena implements Listener {
 			pl.attackAmountStamps.remove(damager.getName());
 			pl.attackAmountStamps.put(damager.getName(), (int) (currentATK + event.getDamage() * 200));
 			WarlordManager.players.get(this.arenaId).get(damager.getName()).totalATK += event.getDamage() * 200;
+		}
+	}
+	
+	@EventHandler
+	public void onOtherATK(EntityDamageEvent event) {
+		Entity damagee = event.getEntity();
+		if (WarlordManager.players.get(this.arenaId).containsKey(damagee.getName())){
+			WarlordPlayer pl = WarlordManager.players.get(this.arenaId).get(damagee.getName());
+			pl.health -= event.getDamage() * 200;
 		}
 	}
 
