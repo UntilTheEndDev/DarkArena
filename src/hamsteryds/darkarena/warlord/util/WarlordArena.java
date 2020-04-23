@@ -18,9 +18,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
+import hamsteryds.darkarena.warlord.role.SkillEffecter;
 import hamsteryds.darkarena.warlord.runner.WarlordManager;
 
 public class WarlordArena implements Listener {
@@ -282,4 +284,12 @@ public class WarlordArena implements Listener {
 		}
 	}
 
+	@EventHandler public void onClick(PlayerInteractEvent event) {
+		if(!event.hasItem()) return;
+		ItemStack item=event.getItem();
+		if(item.hasItemMeta())
+			if(item.getItemMeta().hasDisplayName())
+				SkillEffecter.effect(item,event.getPlayer());
+	}
+	
 }
