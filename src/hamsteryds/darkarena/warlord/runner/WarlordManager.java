@@ -17,7 +17,6 @@ import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.util.WarlordArena;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 import hamsteryds.darkarena.warlord.util.WarlordTeam;
-import hamsteryds.darkarena.warlord.util.WarlordTeam.TeamType;
 
 public class WarlordManager {
 	public static HashMap<String, WarlordArena> arenas = new HashMap<String, WarlordArena>();
@@ -41,9 +40,8 @@ public class WarlordManager {
 		arenas.remove(arenaId);
 		players.remove(arenaId);
 		teams.remove(arenaId);
-		arenas.put(arenaId,
-				new WarlordArena(arenaId, true, false, arenaLoader.getLong("arenas." + arenaId + ".maxPeriod"),
-						arenaLoader.getInt("arenas." + arenaId + ".maxPlayer")));
+		arenas.put(arenaId, new WarlordArena(arenaId, arenaLoader.getLong("arenas." + arenaId + ".maxPeriod"),
+				arenaLoader.getInt("arenas." + arenaId + ".maxPlayer")));
 		List<WarlordTeam> initTeams = new ArrayList<WarlordTeam>();
 		initTeams.add(new WarlordTeam(loadLocation("arenas." + arenaId + ".spawnpoint.red"), 0));
 		initTeams.add(new WarlordTeam(loadLocation("arenas." + arenaId + ".spawnpoint.blue"), 0));
@@ -61,51 +59,6 @@ public class WarlordManager {
 	}
 
 	private static HashMap<String, Boolean> isCounting = new HashMap<String, Boolean>();
-
-	public static boolean joinArena(Player player, String arenaId, TeamType teamType) {
-		if (!arenas.get(arenaId).isWaiting)
-			return false;
-		int maxPlayers = arenas.get(arenaId).maxPlayer;
-		HashMap<String, WarlordPlayer> playerMap = players.get(arenaId);
-		if (playerMap.keySet().size() >= maxPlayers) {
-			return false;
-		}
-
-		WarlordTeam team = (teamType == TeamType.RED) ? teams.get(arenaId).get(0) : teams.get(arenaId).get(1);
-		players.get(arenaId).put(player.getName(),
-				new WarlordPlayer((int) player.getHealth() * 200, player.getFoodLevel() * 10, 0, 0, 0, arenaId,
-						player.getName(), team,
-						(teamType == TeamType.BLUE) ? teams.get(arenaId).get(0) : teams.get(arenaId).get(1), false));
-		player.setBedSpawnLocation(team.spawnLocation);
-		if (playerMap.keySet().size() * 2 >= maxPlayers) {
-			if (isCounting.containsKey(arenaId))
-				if (isCounting.get(arenaId))
-					return true;
-			isCounting.remove(arenaId);
-			isCounting.put(arenaId, true);
-			new BukkitRunnable() {
-				int cnt = 120;
-
-				@Override
-				public void run() {
-					cnt--;
-					if (cnt <= 0) {
-						isCounting.remove(arenaId);
-						startArena(arenaId);
-						cancel();
-						return;
-					}
-					for (String name : playerMap.keySet()) {
-						Player player = Bukkit.getPlayer(name);
-						player.sendMessage("§6[战争领主]§r比赛将在" + cnt + "秒后开始");
-					}
-				}
-
-			}.runTaskTimer(DarkArena.instance, 0L, 20L);
-		}
-
-		return true;
-	}
 
 	public static void quitArena(Player player, String arenaId) {
 		players.get(arenaId).remove(player.getName());
@@ -166,7 +119,6 @@ public class WarlordManager {
 	}
 
 	public static void stopArena(String arenaId) {
-		arenas.get(arenaId).unRegEvents();
 		List<WarlordTeam> currentTeams = teams.get(arenaId);
 		HashMap<String, WarlordPlayer> currentPlayers = players.get(arenaId);
 		List<String> winners = new ArrayList<String>();
