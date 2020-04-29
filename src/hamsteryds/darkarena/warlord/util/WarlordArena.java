@@ -54,7 +54,7 @@ public class WarlordArena implements Listener {
 		if (players.keySet().size() * 2 >= this.maxPlayer && (!this.isTicking)) {
 			this.isTicking = true;
 			new BukkitRunnable() {
-				int cnt = 120;
+				int cnt = 60;
 
 				@Override
 				public void run() {

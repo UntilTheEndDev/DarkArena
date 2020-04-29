@@ -128,10 +128,10 @@ public class PlayerListener implements Listener {
 				this.announcePlayer(pl, "§6[战争领主]§r玩家" + pl.name + "掉落了敌方旗帜，30秒后自动传回大本营！",
 						"§6[战争领主]§r玩家" + pl.name + "掉落了我方旗帜，30秒后自动传回大本营！");
 				this.announcePlayer(pl,
-						"§6[战争领主]§r坐标为 x:" + player.getLocation().getBlockX() + " y:" + player.getLocation().getBlockX()
-								+ " z:" + player.getLocation().getBlockX(),
-						"§6[战争领主]§r坐标为 x:" + player.getLocation().getBlockX() + " y:" + player.getLocation().getBlockX()
-								+ " z:" + player.getLocation().getBlockX());
+						"§6[战争领主]§r坐标为 x:" + player.getLocation().getBlockX() + " y:" + player.getLocation().getBlockY()
+								+ " z:" + player.getLocation().getBlockZ(),
+						"§6[战争领主]§r坐标为 x:" + player.getLocation().getBlockX() + " y:" + player.getLocation().getBlockY()
+								+ " z:" + player.getLocation().getBlockZ());
 
 				new BukkitRunnable() {
 					@Override

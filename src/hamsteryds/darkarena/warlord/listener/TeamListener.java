@@ -83,14 +83,15 @@ public class TeamListener implements Listener {
 							}
 
 						}.runTaskLater(DarkArena.instance, 200L);
-						player.sendMessage("§6[战争领主]§r您成功为队伍赢得1分");
-						player.sendMessage("§6[战争领主]§r您成功抢夺了旗帜");
+						if (pl.team.currentScore >= 1000) {
+							WarlordManager.stopArena(arenaId);
+							return;
+						}
 						this.announcePlayer(pl, "§6[战争领主]§r" + pl.name + "夺取并带回了敌方的战旗，为战队赢得了250分！",
 								"§6[战争领主]§r" + pl.name + "抢占你方旗帜成功，对方战队赢得了250分！");
-						this.announcePlayer(pl, "§6[战争领主]§r" + pl.name + "§6[战争领主]§r旗帜将在10秒钟后重新生成！",
-								"§6[战争领主]§r" + pl.name + "§6[战争领主]§r旗帜将在10秒钟后重新生成！");
-						if (pl.team.currentScore >= 1000)
-							WarlordManager.stopArena(arenaId);
+						this.announcePlayer(pl, "§6[战争领主]§r旗帜将在10秒钟后重新生成！",
+								"§6[战争领主]§r旗帜将在10秒钟后重新生成！");
+
 					}
 				}
 			}
