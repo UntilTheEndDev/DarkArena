@@ -31,7 +31,7 @@ public class WarlordArena implements Listener {
 		this.isTicking = false;
 		this.lastTime = lastTime;
 		this.maxPlayer = maxPlayer;
-		this.waitPeriod=WarlordManager.arenaLoader.getInt(this.arenaId+".waitPeriod");
+		this.waitPeriod=WarlordManager.arenaLoader.getInt("arenas."+this.arenaId+".waitPeriod");
 		new TeamListener(this.arenaId);
 		new PlayerListener(this.arenaId);
 	}

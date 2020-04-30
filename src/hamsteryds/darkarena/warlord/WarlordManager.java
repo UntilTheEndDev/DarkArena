@@ -161,21 +161,21 @@ public class WarlordManager {
 			losers.clear();
 			losers.addAll(tmp);
 		}
-		prideWinner(losers);
-		prideLoser(winners);
+		prideWinner(winners);
+		prideLoser(losers);
 
 		loadConfigWarlordArena(arenaId);
 	}
 
-	public static void prideLoser(List<UUID> winners) {
-		for (UUID uuid : winners) {
+	public static void prideLoser(List<UUID> losers) {
+		for (UUID uuid : losers) {
 			Player player = Bukkit.getPlayer(uuid);
 			player.sendMessage("§6[战争领主]§r您的队伍获胜！");
 		}
 	}
 
-	public static void prideWinner(List<UUID> losers) {
-		for (UUID uuid : losers) {
+	public static void prideWinner(List<UUID> winners) {
+		for (UUID uuid : winners) {
 			StatsManager.playerDatas.get(uuid).totalVictory++;
 			Player player = Bukkit.getPlayer(uuid);
 			player.sendMessage("§6[战争领主]§r您的队伍失败！");

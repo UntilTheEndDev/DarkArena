@@ -36,8 +36,17 @@ public class DarkArena extends JavaPlugin {
 	public boolean onCommand(CommandSender sender,Command cmd,String label,String[] contents) {
 		if(label.equalsIgnoreCase("warlord")) {
 			if(sender instanceof Player) {
-				if(contents[0].equals("join"))
+				if(contents[0].equals("join")){
+					if(!WarlordManager.arenas.containsKey(contents[1])){
+						sender.sendMessage("§6[战争领主]§r无法加入游戏：没有此赛场");
+						return true;
+					}
+					if(!(contents[2].equalsIgnoreCase("RED")||contents[2].equalsIgnoreCase("BLUE"))){
+						sender.sendMessage("§6[战争领主]§r无法加入游戏：没有此队伍");
+						return true;
+					}
 					switch(WarlordManager.arenas.get(contents[1]).addPlayer((Player) sender,TeamType.valueOf(contents[2]))) {
+					
 					case "STARTED":
 						sender.sendMessage("§6[战争领主]§r无法加入游戏：已经开始");
 						break;
@@ -51,6 +60,7 @@ public class DarkArena extends JavaPlugin {
 						sender.sendMessage("§6[战争领主]§r加入游戏成功");
 						break;
 					}
+				}
 				if(contents[0].equals("rejoin")) {
 					if(PlayerListener.rejoinBeforeEnding((Player) sender, PlayerListener.rejoinDatas.get(((Player) sender).getUniqueId()))) {
 						sender.sendMessage("§6[战争领主]§r重新加入游戏成功");
