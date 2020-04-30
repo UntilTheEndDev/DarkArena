@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,10 +27,10 @@ public class StatsManager implements Listener {
 
 		public Player$1(int totalMatch, int totalVictory, int totalATK, int totalCure, int totalATKMVP,
 				int totalCureMVP) {
-			this.totalMatch = totalMatch; //
-			this.totalVictory = totalVictory; //
-			this.totalATK = totalATK; //
-			this.totalCure = totalCure; //
+			this.totalMatch = totalMatch; 
+			this.totalVictory = totalVictory; 
+			this.totalATK = totalATK; 
+			this.totalCure = totalCure; 
 			this.totalATKMVP = totalATKMVP;
 			this.totalCureMVP = totalCureMVP;
 		}
@@ -37,6 +39,12 @@ public class StatsManager implements Listener {
 
 	public static HashMap<UUID, Player$1> playerDatas = new HashMap<UUID, Player$1>();
 
+	public StatsManager() {
+		for(World world:Bukkit.getWorlds()) 
+			for(Player player:world.getPlayers())
+				loadData(player);
+	}
+	
 	public static void loadData(Player player) {
 		UUID uuid = player.getUniqueId();
 		File file = new File(DarkArena.instance.getDataFolder() + "/playerdata/warlord/", uuid.toString() + ".yml");
@@ -47,6 +55,7 @@ public class StatsManager implements Listener {
 			data = new Player$1(yaml.getInt("totalMatch"), yaml.getInt("totalVictory"), yaml.getInt("totalATK"),
 					yaml.getInt("totalCure"), yaml.getInt("totalATKMVP"), yaml.getInt("totalCureMVP"));
 		playerDatas.put(uuid, data);
+		saveData(player);
 	}
 
 	public static void saveData(Player player) {
@@ -77,5 +86,11 @@ public class StatsManager implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		loadData(event.getPlayer());
+	}
+
+	public static void saveAll() {
+		for(World world:Bukkit.getWorlds()) 
+			for(Player player:world.getPlayers())
+				saveData(player);
 	}
 }

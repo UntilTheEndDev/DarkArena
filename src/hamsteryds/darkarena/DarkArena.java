@@ -27,6 +27,11 @@ public class DarkArena extends JavaPlugin {
 		new PAPIExpansion().register();
 	}
 
+	@Override
+	public void onDisable() {
+		StatsManager.saveAll();
+	}
+	
 	@Override 
 	public boolean onCommand(CommandSender sender,Command cmd,String label,String[] contents) {
 		if(label.equalsIgnoreCase("warlord")) {
