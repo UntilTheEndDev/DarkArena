@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
+import hamsteryds.darkarena.warlord.StatsManager.Player$1;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
@@ -33,6 +34,7 @@ public class PAPIExpansion extends PlaceholderExpansion {
 		String arenaId = findArena(player.getUniqueId());
 		if(arenaId==null) return "";
 		WarlordPlayer pl=WarlordManager.players.get(arenaId).get(player.getUniqueId());
+		Player$1 data=StatsManager.playerDatas.get(player.getUniqueId());
 		if (identifier.equalsIgnoreCase("局内击杀数")) {
 			return String.valueOf(pl.kill);
 		} else if(identifier.equalsIgnoreCase("局内助攻数")) {
@@ -51,6 +53,18 @@ public class PAPIExpansion extends PlaceholderExpansion {
 			return String.valueOf(pl.magicka);
 		} else if(identifier.equalsIgnoreCase("生命值")) {
 			return String.valueOf(pl.health);
+		} else if(identifier.equalsIgnoreCase("生涯总场数")) {
+			return String.valueOf(data.totalMatch);
+		} else if(identifier.equalsIgnoreCase("生涯胜场")) {
+			return String.valueOf(data.totalVictory);
+		} else if(identifier.equalsIgnoreCase("生涯总输出")) {
+			return String.valueOf(data.totalATK);
+		} else if(identifier.equalsIgnoreCase("生涯总治疗")) {
+			return String.valueOf(data.totalCure);
+		} else if(identifier.equalsIgnoreCase("生涯输出MVP数")) {
+			return String.valueOf(data.totalATKMVP);
+		} else if(identifier.equalsIgnoreCase("生涯治疗MVP数")) {
+			return String.valueOf(data.totalCureMVP);
 		} else
 			return "";
 	}

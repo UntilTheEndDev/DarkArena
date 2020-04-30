@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import hamsteryds.darkarena.warlord.PAPIExpansion;
+import hamsteryds.darkarena.warlord.StatsManager;
 import hamsteryds.darkarena.warlord.WarlordManager;
 import hamsteryds.darkarena.warlord.listener.PlayerListener;
 import hamsteryds.darkarena.warlord.util.WarlordTeam.TeamType;
@@ -16,10 +17,14 @@ public class DarkArena extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
-		saveResource("warlord.yml", false);
+		
 		getCommand("warlord").setExecutor(this);
-		new PAPIExpansion().register();
+		
 		WarlordManager.loadConfigWarlordArenas();
+		
+		this.getServer().getPluginManager().registerEvents(new StatsManager(),this);
+		
+		new PAPIExpansion().register();
 	}
 
 	@Override 

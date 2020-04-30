@@ -27,6 +27,7 @@ public class WarlordManager {
 	public static YamlConfiguration arenaLoader = YamlConfiguration.loadConfiguration(arenaFile);
 
 	public static void loadConfigWarlordArenas() {
+		DarkArena.instance.saveResource("warlord.yml", false);
 		for (String path : arenaLoader.getKeys(true)) {
 			if (path.startsWith("arenas.")) {
 				String tmp = path.replace("arenas.", "");
