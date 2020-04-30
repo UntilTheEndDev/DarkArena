@@ -127,13 +127,30 @@ public class WarlordManager {
 		List<UUID> losers = new ArrayList<UUID>();
 		int score1 = currentTeams.get(0).currentScore;
 		int score2 = currentTeams.get(1).currentScore;
+		UUID ATKMVP=null, CureMVP=null;
+		int atk = 0, cure = 0;
 		for (UUID uuid : currentPlayers.keySet()) {
 			WarlordPlayer pl = currentPlayers.get(uuid);
+			if (pl.totalATK > atk) {
+				atk = pl.totalATK;
+				ATKMVP = uuid;
+			}
+			if (pl.totalCure > cure) {
+				cure = pl.totalCure;
+				CureMVP = uuid;
+			}
+			StatsManager.playerDatas.get(uuid).totalMatch++;
+			StatsManager.playerDatas.get(uuid).totalATK += pl.totalATK;
+			StatsManager.playerDatas.get(uuid).totalCure += pl.totalCure;
 			if (pl.team == currentTeams.get(0))
 				winners.add(uuid);
 			if (pl.team == currentTeams.get(1))
 				losers.add(uuid);
 		}
+		if (ATKMVP != null)
+			StatsManager.playerDatas.get(ATKMVP).totalATKMVP++;
+		if (CureMVP != null)
+			StatsManager.playerDatas.get(CureMVP).totalCureMVP++;
 		boolean flag = false;
 		if (score1 < score2)
 			flag = true;
@@ -159,6 +176,7 @@ public class WarlordManager {
 
 	public static void prideWinner(List<UUID> losers) {
 		for (UUID uuid : losers) {
+			StatsManager.playerDatas.get(uuid).totalVictory++;
 			Player player = Bukkit.getPlayer(uuid);
 			player.sendMessage("§6[战争领主]§r您的队伍失败！");
 		}

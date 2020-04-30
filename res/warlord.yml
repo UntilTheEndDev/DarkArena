@@ -2,6 +2,7 @@ arenas:
   example_arena:
     maxPeriod: 1800
     maxPlayer: 24
+    waitPeriod: 120 
     spawnpoint:
       red: 
         world: world

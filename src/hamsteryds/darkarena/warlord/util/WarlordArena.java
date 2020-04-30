@@ -16,6 +16,7 @@ import hamsteryds.darkarena.warlord.listener.TeamListener;
 import hamsteryds.darkarena.warlord.util.WarlordTeam.TeamType;
 
 public class WarlordArena implements Listener {
+	public int waitPeriod;
 	public String arenaId;
 	public boolean isWaiting;
 	public boolean isRunning;
@@ -30,6 +31,7 @@ public class WarlordArena implements Listener {
 		this.isTicking = false;
 		this.lastTime = lastTime;
 		this.maxPlayer = maxPlayer;
+		this.waitPeriod=WarlordManager.arenaLoader.getInt(this.arenaId+".waitPeriod");
 		new TeamListener(this.arenaId);
 		new PlayerListener(this.arenaId);
 	}
@@ -55,7 +57,7 @@ public class WarlordArena implements Listener {
 		if (players.keySet().size() * 2 >= this.maxPlayer && (!this.isTicking)) {
 			this.isTicking = true;
 			new BukkitRunnable() {
-				int cnt = 60;
+				int cnt = waitPeriod;
 
 				@Override
 				public void run() {
