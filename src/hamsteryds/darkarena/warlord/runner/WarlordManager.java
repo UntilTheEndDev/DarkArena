@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,7 +21,7 @@ import hamsteryds.darkarena.warlord.util.WarlordTeam;
 
 public class WarlordManager {
 	public static HashMap<String, WarlordArena> arenas = new HashMap<String, WarlordArena>();
-	public static HashMap<String, HashMap<String, WarlordPlayer>> players = new HashMap<String, HashMap<String, WarlordPlayer>>();
+	public static HashMap<String, HashMap<UUID, WarlordPlayer>> players = new HashMap<String, HashMap<UUID, WarlordPlayer>>();
 	public static HashMap<String, List<WarlordTeam>> teams = new HashMap<String, List<WarlordTeam>>();
 	public static File arenaFile = new File(DarkArena.instance.getDataFolder(), "warlord.yml");
 	public static YamlConfiguration arenaLoader = YamlConfiguration.loadConfiguration(arenaFile);
@@ -46,7 +47,7 @@ public class WarlordManager {
 		initTeams.add(new WarlordTeam(loadLocation("arenas." + arenaId + ".spawnpoint.red"), 0));
 		initTeams.add(new WarlordTeam(loadLocation("arenas." + arenaId + ".spawnpoint.blue"), 0));
 		teams.put(arenaId, initTeams);
-		players.put(arenaId, new HashMap<String, WarlordPlayer>());
+		players.put(arenaId, new HashMap<UUID, WarlordPlayer>());
 	}
 
 	public static Location loadLocation(String path) {
@@ -61,22 +62,22 @@ public class WarlordManager {
 	private static HashMap<String, Boolean> isCounting = new HashMap<String, Boolean>();
 
 	public static void quitArena(Player player, String arenaId) {
-		players.get(arenaId).remove(player.getName());
+		players.get(arenaId).remove(player.getUniqueId());
 	}
 
 	public static boolean startArena(String arenaId) {
 		if (!arenas.get(arenaId).isWaiting)
 			return false;
 		int maxPlayers = arenas.get(arenaId).maxPlayer;
-		HashMap<String, WarlordPlayer> playerMap = players.get(arenaId);
+		HashMap<UUID, WarlordPlayer> playerMap = players.get(arenaId);
 		arenas.get(arenaId).isWaiting = false;
 		arenas.get(arenaId).isRunning = true;
-		for (String name : playerMap.keySet()) {
-			Player player = Bukkit.getPlayer(name);
+		for (UUID uuid : playerMap.keySet()) {
+			Player player = Bukkit.getPlayer(uuid);
 			if (player == null)
-				playerMap.remove(name);
+				playerMap.remove(uuid);
 			else {
-				player.teleport(playerMap.get(name).team.spawnLocation);
+				player.teleport(playerMap.get(uuid).team.spawnLocation);
 				player.sendMessage("§6[战争领主]§r比赛开始");
 			}
 		}
@@ -110,9 +111,9 @@ public class WarlordManager {
 				cancel();
 				return;
 			}
-			for (String name : WarlordManager.players.get(arenaId).keySet()) {
-				WarlordPlayer pl = WarlordManager.players.get(arenaId).get(name);
-				Player player = Bukkit.getPlayer(name);
+			for (UUID uuid : WarlordManager.players.get(arenaId).keySet()) {
+				WarlordPlayer pl = WarlordManager.players.get(arenaId).get(uuid);
+				Player player = Bukkit.getPlayer(uuid);
 				player.setFoodLevel(pl.magicka / 10);
 			}
 		}
@@ -120,23 +121,23 @@ public class WarlordManager {
 
 	public static void stopArena(String arenaId) {
 		List<WarlordTeam> currentTeams = teams.get(arenaId);
-		HashMap<String, WarlordPlayer> currentPlayers = players.get(arenaId);
-		List<String> winners = new ArrayList<String>();
-		List<String> losers = new ArrayList<String>();
+		HashMap<UUID, WarlordPlayer> currentPlayers = players.get(arenaId);
+		List<UUID> winners = new ArrayList<UUID>();
+		List<UUID> losers = new ArrayList<UUID>();
 		int score1 = currentTeams.get(0).currentScore;
 		int score2 = currentTeams.get(1).currentScore;
-		for (String name : currentPlayers.keySet()) {
-			WarlordPlayer pl = currentPlayers.get(name);
+		for (UUID uuid : currentPlayers.keySet()) {
+			WarlordPlayer pl = currentPlayers.get(uuid);
 			if (pl.team == currentTeams.get(0))
-				winners.add(name);
+				winners.add(uuid);
 			if (pl.team == currentTeams.get(1))
-				losers.add(name);
+				losers.add(uuid);
 		}
 		boolean flag = false;
 		if (score1 < score2)
 			flag = true;
 		if (flag) {
-			List<String> tmp = new ArrayList<String>(winners);
+			List<UUID> tmp = new ArrayList<UUID>(winners);
 			winners.clear();
 			winners.addAll(losers);
 			losers.clear();
@@ -148,16 +149,16 @@ public class WarlordManager {
 		loadConfigWarlordArena(arenaId);
 	}
 
-	public static void prideLoser(List<String> winners) {
-		for (String name : winners) {
-			Player player = Bukkit.getPlayer(name);
+	public static void prideLoser(List<UUID> winners) {
+		for (UUID uuid : winners) {
+			Player player = Bukkit.getPlayer(uuid);
 			player.sendMessage("§6[战争领主]§r您的队伍获胜！");
 		}
 	}
 
-	public static void prideWinner(List<String> losers) {
-		for (String name : losers) {
-			Player player = Bukkit.getPlayer(name);
+	public static void prideWinner(List<UUID> losers) {
+		for (UUID uuid : losers) {
+			Player player = Bukkit.getPlayer(uuid);
 			player.sendMessage("§6[战争领主]§r您的队伍失败！");
 		}
 	}

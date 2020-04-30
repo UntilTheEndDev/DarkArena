@@ -1,5 +1,7 @@
 package hamsteryds.darkarena.warlord.listener;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,10 +35,10 @@ public class TeamListener implements Listener {
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		String name = player.getName();
-		if (WarlordManager.players.get(this.arenaId).containsKey(name)) {
+		UUID uuid = player.getUniqueId(); 
+		if (WarlordManager.players.get(this.arenaId).containsKey(uuid)) {
 			WarlordArena arena = WarlordManager.arenas.get(this.arenaId);
-			WarlordPlayer pl = WarlordManager.players.get(this.arenaId).get(name);
+			WarlordPlayer pl = WarlordManager.players.get(this.arenaId).get(uuid);
 			event.setCancelled(true);
 			if (!arena.isRunning)
 				return;
@@ -99,9 +101,9 @@ public class TeamListener implements Listener {
 	}
 
 	public void announcePlayer(WarlordPlayer pl, String teamMessage, String enemyMessage) {
-		for (String name : WarlordManager.players.get(this.arenaId).keySet()) {
-			Player gamePlayer = Bukkit.getPlayer(name);
-			if (WarlordManager.players.get(this.arenaId).get(name).enemy == pl.team)
+		for (UUID uuid : WarlordManager.players.get(this.arenaId).keySet()) {
+			Player gamePlayer = Bukkit.getPlayer(uuid);
+			if (WarlordManager.players.get(this.arenaId).get(uuid).enemy == pl.team)
 				gamePlayer.sendMessage(enemyMessage);
 			else
 				gamePlayer.sendMessage(teamMessage);

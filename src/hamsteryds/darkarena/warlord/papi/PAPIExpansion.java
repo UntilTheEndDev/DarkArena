@@ -1,9 +1,10 @@
 package hamsteryds.darkarena.warlord.papi;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 
 import hamsteryds.darkarena.warlord.runner.WarlordManager;
-import hamsteryds.darkarena.warlord.util.WarlordArena;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
@@ -30,41 +31,34 @@ public class PAPIExpansion extends PlaceholderExpansion {
 	public String onPlaceholderRequest(Player player, String identifier) {
 		if (player == null)
 			return "";
-		WarlordPlayer pl = findPlayer(player.getName());
-		WarlordArena arena = findArena(player.getName());
-		if(pl==null||arena==null) return "";
-		if (identifier.equalsIgnoreCase("plKill")) {
+		String arenaId = findArena(player.getUniqueId());
+		if(arenaId==null) return "";
+		WarlordPlayer pl=WarlordManager.players.get(arenaId).get(player.getUniqueId());
+		if (identifier.equalsIgnoreCase("局内击杀数")) {
 			return String.valueOf(pl.kill);
-		} else if(identifier.equalsIgnoreCase("plAssist")) {
+		} else if(identifier.equalsIgnoreCase("局内助攻数")) {
 			return String.valueOf(pl.assist);
-		} else if(identifier.equalsIgnoreCase("plDeath")) {
+		} else if(identifier.equalsIgnoreCase("局内死亡数")) {
 			return String.valueOf(pl.death);
-		} else if(identifier.equalsIgnoreCase("teamScore")) {
+		} else if(identifier.equalsIgnoreCase("局内队伍分数")) {
 			return String.valueOf(pl.team.currentScore);
-		} else if(identifier.equalsIgnoreCase("arenaLast")) {
-			return String.valueOf(arena.lastTime);
-		} else if(identifier.equalsIgnoreCase("plTotalATK")) {
+		} else if(identifier.equalsIgnoreCase("局内结束倒计时")) {
+			return String.valueOf(WarlordManager.arenas.get(arenaId).lastTime);
+		} else if(identifier.equalsIgnoreCase("局内总输出")) {
 			return String.valueOf(pl.totalATK);
-		} else if(identifier.equalsIgnoreCase("plTotalCure")) {
+		} else if(identifier.equalsIgnoreCase("局内总治疗")) {
 			return String.valueOf(pl.totalCure);
-		} else if(identifier.equalsIgnoreCase("plPP")) {
+		} else if(identifier.equalsIgnoreCase("魔法值")) {
 			return String.valueOf(pl.magicka);
-		} else if(identifier.equalsIgnoreCase("plHP")) {
+		} else if(identifier.equalsIgnoreCase("生命值")) {
 			return String.valueOf(pl.health);
 		} else
 			return "";
 	}
-
-	public WarlordPlayer findPlayer(String name) {
+	public String findArena(UUID uuid) {
 		for (String arenaId : WarlordManager.players.keySet())
-			if (WarlordManager.players.get(arenaId).containsKey(name))
-				return WarlordManager.players.get(arenaId).get(name);
-		return null;
-	}
-	public WarlordArena findArena(String name) {
-		for (String arenaId : WarlordManager.players.keySet())
-			if (WarlordManager.players.get(arenaId).containsKey(name))
-				return WarlordManager.arenas.get(arenaId);
+			if (WarlordManager.players.get(arenaId).containsKey(uuid))
+				return arenaId;
 		return null;
 	}
 }

@@ -42,7 +42,7 @@ public class DarkArena extends JavaPlugin {
 						break;
 					}
 				if(contents[0].equals("rejoin")) {
-					if(PlayerListener.rejoinBeforeEnding((Player) sender, PlayerListener.rejoinDatas.get(sender.getName()))) {
+					if(PlayerListener.rejoinBeforeEnding((Player) sender, PlayerListener.rejoinDatas.get(((Player) sender).getUniqueId()))) {
 						sender.sendMessage("§6[战争领主]§r重新加入游戏成功");
 					}else {
 						sender.sendMessage("§6[战争领主]§r重新加入游戏失败");

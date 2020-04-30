@@ -3,6 +3,7 @@ package hamsteryds.darkarena.warlord.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class WarlordPlayer {
 	public int health;
@@ -16,8 +17,8 @@ public class WarlordPlayer {
 	public WarlordTeam enemy;
 	public boolean isCarryingFlag;
 
-	public HashMap<String, Integer> attackAmountStamps;
-	public List<String> attackTimeStamps;
+	public HashMap<UUID, Integer> attackAmountStamps;
+	public List<UUID> attackTimeStamps;
 	public int totalATK;
 	public int totalCure;
 
@@ -33,8 +34,8 @@ public class WarlordPlayer {
 		this.team = team;
 		this.enemy = enemy;
 		this.isCarryingFlag = isCarryingFlag;
-		this.attackAmountStamps = new HashMap<String, Integer>();
-		this.attackTimeStamps = new ArrayList<String>();
+		this.attackAmountStamps = new HashMap<UUID, Integer>();
+		this.attackTimeStamps = new ArrayList<UUID>();
 		this.totalATK = 0;
 		this.totalCure = 0;
 	}

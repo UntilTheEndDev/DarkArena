@@ -2,6 +2,7 @@ package hamsteryds.darkarena.warlord.util;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class WarlordArena implements Listener {
 	public String addPlayer(Player player, TeamType teamType) {
 		if (!isWaiting)
 			return "STARTED";
-		HashMap<String, WarlordPlayer> players = WarlordManager.players.get(this.arenaId);
+		HashMap<UUID, WarlordPlayer> players = WarlordManager.players.get(this.arenaId);
 		if (players.keySet().size() >= this.maxPlayer)
 			return "ARENAFULL";
 		List<WarlordTeam> teams = WarlordManager.teams.get(this.arenaId);
@@ -48,7 +49,7 @@ public class WarlordArena implements Listener {
 			team = tmp;
 			return "SUCCESSFULLY JOIN ANOTHER TEAM";
 		}
-		WarlordManager.players.get(this.arenaId).put(player.getName(), new WarlordPlayer((int) player.getHealth() * 200,
+		WarlordManager.players.get(this.arenaId).put(player.getUniqueId(), new WarlordPlayer((int) player.getHealth() * 200,
 				player.getFoodLevel() * 10, 0, 0, 0, this.arenaId, player.getName(), team, enemy, false));
 
 		if (players.keySet().size() * 2 >= this.maxPlayer && (!this.isTicking)) {
@@ -66,8 +67,8 @@ public class WarlordArena implements Listener {
 						if (cnt % 30 == 0 || 
 						   (cnt % 10 == 0 && cnt <= 30) || 
 						   (cnt % 1 == 0 && cnt <= 10))
-							for (String name : players.keySet()) {
-								Player player = Bukkit.getPlayer(name);
+							for (UUID uuid : players.keySet()) {
+								Player player = Bukkit.getPlayer(uuid);
 								player.sendMessage("§6[战争领主]§r比赛将在" + cnt + "秒后开始");
 							}
 					}
