@@ -1,10 +1,9 @@
-package hamsteryds.darkarena.warlord.papi;
+package hamsteryds.darkarena.warlord;
 
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-import hamsteryds.darkarena.warlord.runner.WarlordManager;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 

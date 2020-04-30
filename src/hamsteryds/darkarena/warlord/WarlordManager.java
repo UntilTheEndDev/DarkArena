@@ -1,4 +1,4 @@
-package hamsteryds.darkarena.warlord.runner;
+package hamsteryds.darkarena.warlord;
 
 import java.io.File;
 import java.util.ArrayList;

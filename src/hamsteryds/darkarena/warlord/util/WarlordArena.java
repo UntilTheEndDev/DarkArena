@@ -10,9 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
+import hamsteryds.darkarena.warlord.WarlordManager;
 import hamsteryds.darkarena.warlord.listener.PlayerListener;
 import hamsteryds.darkarena.warlord.listener.TeamListener;
-import hamsteryds.darkarena.warlord.runner.WarlordManager;
 import hamsteryds.darkarena.warlord.util.WarlordTeam.TeamType;
 
 public class WarlordArena implements Listener {

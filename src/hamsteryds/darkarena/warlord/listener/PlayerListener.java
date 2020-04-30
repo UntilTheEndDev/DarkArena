@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
-import hamsteryds.darkarena.warlord.runner.WarlordManager;
+import hamsteryds.darkarena.warlord.WarlordManager;
 import hamsteryds.darkarena.warlord.skill.SkillEffecter;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 
