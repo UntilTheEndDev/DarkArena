@@ -12,7 +12,7 @@ import hamsteryds.darkarena.DarkArena;
 public class SkillEffecter {
 	public static void effect(ItemStack item, Player player) {
 		Material material = item.getType();
-		if (material == Material.SULPHUR)
+		if (material == ItemFactory.fromLegacy(Material.SULPHUR))
 			return;
 		String itemName = item.getItemMeta().getDisplayName();
 		
