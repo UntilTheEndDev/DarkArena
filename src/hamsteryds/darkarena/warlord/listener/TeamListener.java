@@ -75,6 +75,8 @@ public class TeamListener implements Listener {
 						pl.team.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.enemy.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.isCarryingFlag = false;
+						pl.team.isRespawningFlag=true;
+						pl.enemy.isRespawningFlag=true;
 						new BukkitRunnable() {
 							@Override
 							public void run() {
@@ -82,6 +84,8 @@ public class TeamListener implements Listener {
 								pl.enemy.currentFlagLocation = pl.enemy.spawnLocation;
 								pl.team.currentFlagLocation.getBlock().setType(Material.BEACON);
 								pl.enemy.currentFlagLocation.getBlock().setType(Material.BEACON);
+								pl.team.isRespawningFlag=false;
+								pl.enemy.isRespawningFlag=false;
 							}
 
 						}.runTaskLater(DarkArena.instance, 200L);

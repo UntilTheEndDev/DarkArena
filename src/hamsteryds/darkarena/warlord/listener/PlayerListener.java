@@ -24,7 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.WarlordManager;
-import hamsteryds.darkarena.warlord.skill.SkillEffecter;
+import hamsteryds.darkarena.warlord.item.SkillEffecter;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 
 public class PlayerListener implements Listener {

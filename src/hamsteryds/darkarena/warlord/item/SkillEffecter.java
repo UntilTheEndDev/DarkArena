@@ -1,4 +1,4 @@
-package hamsteryds.darkarena.warlord.skill;
+package hamsteryds.darkarena.warlord.item;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

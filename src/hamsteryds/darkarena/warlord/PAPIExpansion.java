@@ -2,10 +2,12 @@ package hamsteryds.darkarena.warlord;
 
 import java.util.UUID;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import hamsteryds.darkarena.warlord.StatsManager.Player$1;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
+import hamsteryds.darkarena.warlord.util.WarlordTeam;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class PAPIExpansion extends PlaceholderExpansion {
@@ -69,10 +71,26 @@ public class PAPIExpansion extends PlaceholderExpansion {
 			return String.valueOf(pl.magicka);
 		} else if (identifier.equalsIgnoreCase("生命值")) {
 			return String.valueOf(pl.health);
+		} else if (identifier.equalsIgnoreCase("同队旗帜状态")) {
+			return getFlagState(pl.team);
+		} else if (identifier.equalsIgnoreCase("敌对旗帜状态")) {
+			return getFlagState(pl.enemy);
+		} else if (identifier.equalsIgnoreCase("敌队旗帜状态")) {
+			return String.valueOf(pl.health);
 		} else
 			return "";
 	}
-
+	public String getFlagState(WarlordTeam team) {
+		if(team.isRespawningFlag)
+			return "重新生成中……";
+		if(team.currentFlagLocation.getBlock().getType()!=Material.BEACON)
+			return "被抢夺";
+		if(team.currentFlagLocation.equals(team.spawnLocation))
+			return "安全";
+		if(!team.currentFlagLocation.equals(team.spawnLocation))
+			return "已掉落";
+		return "未知错误-无法检测旗帜状态";
+	}
 	public String findArena(UUID uuid) {
 		for (String arenaId : WarlordManager.players.keySet())
 			if (WarlordManager.players.get(arenaId).containsKey(uuid))

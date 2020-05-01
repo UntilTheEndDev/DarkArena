@@ -12,9 +12,10 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import hamsteryds.darkarena.DarkArena;
+import hamsteryds.darkarena.warlord.task.CompassTargeter;
+import hamsteryds.darkarena.warlord.task.LastTimeCounter;
+import hamsteryds.darkarena.warlord.task.ScaleBalancer;
 import hamsteryds.darkarena.warlord.util.WarlordArena;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 import hamsteryds.darkarena.warlord.util.WarlordTeam;
@@ -82,42 +83,12 @@ public class WarlordManager {
 				player.sendMessage("§6[战争领主]§r比赛开始");
 			}
 		}
-		new ScaleBalancer(arenaId).runTaskTimer(DarkArena.instance, 0L, 10L);
 		teams.get(arenaId).get(0).currentFlagLocation.getBlock().setType(Material.BEACON);
 		teams.get(arenaId).get(1).currentFlagLocation.getBlock().setType(Material.BEACON);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if (arenas.get(arenaId).isRunning)
-					if (arenas.get(arenaId).lastTime-- <= 0) {
-						stopArena(arenaId);
-						cancel();
-					}
-			}
-
-		}.runTaskTimerAsynchronously(DarkArena.instance, 0L, 20L);
+		new LastTimeCounter(arenaId);
+		new ScaleBalancer(arenaId);
+		new CompassTargeter(arenaId);
 		return true;
-	}
-
-	public static class ScaleBalancer extends BukkitRunnable {
-		String arenaId;
-
-		public ScaleBalancer(String arenaId) {
-			this.arenaId = arenaId;
-		}
-
-		@Override
-		public void run() {
-			if (!arenas.get(arenaId).isRunning) {
-				cancel();
-				return;
-			}
-			for (UUID uuid : WarlordManager.players.get(arenaId).keySet()) {
-				WarlordPlayer pl = WarlordManager.players.get(arenaId).get(uuid);
-				Player player = Bukkit.getPlayer(uuid);
-				player.setFoodLevel(pl.magicka / 10);
-			}
-		}
 	}
 
 	public static void stopArena(String arenaId) {
@@ -170,7 +141,7 @@ public class WarlordManager {
 	public static void prideLoser(List<UUID> losers) {
 		for (UUID uuid : losers) {
 			Player player = Bukkit.getPlayer(uuid);
-			player.sendMessage("§6[战争领主]§r您的队伍获胜！");
+			player.sendMessage("§6[战争领主]§r您的队伍失败！");
 		}
 	}
 
@@ -178,7 +149,7 @@ public class WarlordManager {
 		for (UUID uuid : winners) {
 			StatsManager.playerDatas.get(uuid).totalVictory++;
 			Player player = Bukkit.getPlayer(uuid);
-			player.sendMessage("§6[战争领主]§r您的队伍失败！");
+			player.sendMessage("§6[战争领主]§r您的队伍获胜！");
 		}
 	}
 }
