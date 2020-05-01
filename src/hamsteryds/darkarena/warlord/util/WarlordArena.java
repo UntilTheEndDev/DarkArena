@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -70,8 +71,9 @@ public class WarlordArena implements Listener {
 						   (cnt % 10 == 0 && cnt <= 30) || 
 						   (cnt % 1 == 0 && cnt <= 10))
 							for (UUID uuid : players.keySet()) {
-								Player player = Bukkit.getPlayer(uuid);
-								player.sendMessage("§6[战争领主]§r比赛将在" + cnt + "秒后开始");
+								OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+								if(player.isOnline())
+									((Player)player).sendMessage("§6[战争领主]§r比赛将在" + cnt + "秒后开始");
 							}
 					}
 				}
