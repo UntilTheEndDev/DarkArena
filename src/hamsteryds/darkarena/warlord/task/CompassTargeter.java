@@ -50,9 +50,11 @@ public class CompassTargeter extends BukkitRunnable implements Listener {
 			return;
 		ItemStack item = event.getItem();
 		if (item.getType()==Material.COMPASS){
-			if(this.pointTeamFlag.contains(event.getPlayer().getUniqueId()))
-				this.pointTeamFlag.remove(event.getPlayer().getUniqueId());
-			else this.pointTeamFlag.add(event.getPlayer().getUniqueId());
+			Player player=event.getPlayer();
+			if(this.pointTeamFlag.contains(player.getUniqueId()))
+				this.pointTeamFlag.remove(player.getUniqueId());
+			else this.pointTeamFlag.add(player.getUniqueId());
+			player.sendMessage("§6[战争领主]§r已经切换指南针模式");
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class SkillEffecter {
 						player.setHealth((player.getHealth() + player.getMaxHealth() * 0.25) >= player.getMaxHealth()
 								? player.getMaxHealth()
 								: (player.getHealth() + player.getMaxHealth() * 0.25));
-						player.sendMessage("已经传送回原地并恢复大量血量！");
+						player.sendMessage("§6[战争领主]§r已经传送回原地并恢复大量血量！");
 						cancel();
 						return;
 					}
