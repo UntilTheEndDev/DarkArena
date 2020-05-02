@@ -1,0 +1,54 @@
+level1:
+  sk1:
+    blaze: 0.0062 
+    ice1: 0.0031
+    ice2: 0.0062
+    water: 0.0062
+level2:
+  sk1:
+    blaze: 0.0125
+    ice1: 0.0062
+    ice2: 0.0125
+    water: 0.0125
+level3:
+  sk1:
+    blaze: 0.0188
+    ice1: 0.0094
+    ice2: 0.0188
+    water: 0.0188
+level4:
+  sk1:
+    blaze:  0.025
+    ice1: 0.0125
+    ice2: 0.025
+    water: 0.025
+level5:
+  sk1:
+    blaze: 0.0312
+    ice1: 0.0156
+    ice2: 0.0312
+    water: 0.0312
+level6:
+  sk1:
+    blaze: 0.0375 
+    ice1: 0.0188
+    ice2: 0.0375
+    water: 0.0375
+level7:
+  sk1:
+    blaze: 0.0438
+    ice1: 0.0219
+    ice2: 0.0438
+    water: 0.0438
+level8:
+  sk1:
+    blaze: 0.05
+    ice1: 0.025
+    ice2: 0.05
+    water: 0.05
+level9:
+  sk1:
+    blaze: 0.1
+    ice1: 0.05
+    ice2: 0.1
+    water: 0.1

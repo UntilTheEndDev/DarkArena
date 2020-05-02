@@ -1,6 +1,7 @@
 name: DarkArena
 version: 1.0.0
 authors: [HamsterYDS]
+depend: [PlaceholderAPI]
 main: hamsteryds.darkarena.DarkArena
 commands:
   warlord:
