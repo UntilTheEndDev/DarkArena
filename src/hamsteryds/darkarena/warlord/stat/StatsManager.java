@@ -1,4 +1,4 @@
-package hamsteryds.darkarena.warlord;
+package hamsteryds.darkarena.warlord.stat;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,15 +24,21 @@ public class StatsManager implements Listener {
 		public int totalCure;
 		public int totalATKMVP;
 		public int totalCureMVP;
+		public int totalKill;
+		public int currentPlayStreak;
+		public int highestPlayStreak;
 
 		public Player$1(int totalMatch, int totalVictory, int totalATK, int totalCure, int totalATKMVP,
-				int totalCureMVP) {
-			this.totalMatch = totalMatch; 
-			this.totalVictory = totalVictory; 
-			this.totalATK = totalATK; 
-			this.totalCure = totalCure; 
+				int totalCureMVP, int totalKill, int currentPlayStreak, int highestPlayStreak) {
+			this.totalMatch = totalMatch;
+			this.totalVictory = totalVictory;
+			this.totalATK = totalATK;
+			this.totalCure = totalCure;
 			this.totalATKMVP = totalATKMVP;
 			this.totalCureMVP = totalCureMVP;
+			this.totalKill = totalKill;
+			this.currentPlayStreak = currentPlayStreak;
+			this.highestPlayStreak = highestPlayStreak;
 		}
 
 	}
@@ -40,20 +46,21 @@ public class StatsManager implements Listener {
 	public static HashMap<UUID, Player$1> playerDatas = new HashMap<UUID, Player$1>();
 
 	public StatsManager() {
-		for(World world:Bukkit.getWorlds()) 
-			for(Player player:world.getPlayers())
+		for (World world : Bukkit.getWorlds())
+			for (Player player : world.getPlayers())
 				loadData(player);
 	}
-	
+
 	public static void loadData(Player player) {
 		UUID uuid = player.getUniqueId();
 		File file = new File(DarkArena.instance.getDataFolder() + "/playerdata/warlord/", uuid.toString() + ".yml");
 
 		YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-		Player$1 data = new Player$1(0, 0, 0, 0, 0, 0);
+		Player$1 data = new Player$1(0, 0, 0, 0, 0, 0, 0, 0, 0);
 		if (file.exists())
 			data = new Player$1(yaml.getInt("totalMatch"), yaml.getInt("totalVictory"), yaml.getInt("totalATK"),
-					yaml.getInt("totalCure"), yaml.getInt("totalATKMVP"), yaml.getInt("totalCureMVP"));
+					yaml.getInt("totalCure"), yaml.getInt("totalATKMVP"), yaml.getInt("totalCureMVP"),
+					yaml.getInt("totalKill"), yaml.getInt("currentPlayStreak"), yaml.getInt("highestPlayStreak"));
 		playerDatas.put(uuid, data);
 		saveData(player);
 	}
@@ -70,6 +77,9 @@ public class StatsManager implements Listener {
 		yaml.set("totalCure", data.totalCure);
 		yaml.set("totalATKMVP", data.totalATKMVP);
 		yaml.set("totalCureMVP", data.totalCureMVP);
+		yaml.set("totalKill", data.totalKill);
+		yaml.set("currentPlayStreak", data.currentPlayStreak);
+		yaml.set("highestPlayStreak", data.highestPlayStreak);
 
 		try {
 			yaml.save(file);
@@ -89,8 +99,8 @@ public class StatsManager implements Listener {
 	}
 
 	public static void saveAll() {
-		for(World world:Bukkit.getWorlds()) 
-			for(Player player:world.getPlayers())
+		for (World world : Bukkit.getWorlds())
+			for (Player player : world.getPlayers())
 				saveData(player);
 	}
 }

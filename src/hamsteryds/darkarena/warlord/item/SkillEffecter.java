@@ -3,9 +3,7 @@ package hamsteryds.darkarena.warlord.item;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.WarlordManager;
 import hamsteryds.darkarena.warlord.item.skill.NormalSkill;
+import hamsteryds.darkarena.warlord.item.skill.Skill1;
 
 public class SkillEffecter implements Listener{
 	private String arenaId;
@@ -23,6 +22,11 @@ public class SkillEffecter implements Listener{
 	
 	public SkillEffecter(String arenaId) {
 		this.arenaId=arenaId;
+		skills.put("时空断裂",new NormalSkill("Skill1",50,40));
+		skills.put("奥术护盾",new NormalSkill("Skill2",50,40));
+		skills.put("时空断裂",new NormalSkill("Skill1",50,40));
+		skills.put("时空断裂",new NormalSkill("Skill1",50,40));
+		skills.put("时空断裂",new NormalSkill("Skill1",50,40));
 		Bukkit.getServer().getPluginManager().registerEvents(this,DarkArena.instance);
 	}
 	
@@ -54,41 +58,12 @@ public class SkillEffecter implements Listener{
 			return "§6[战争领主]§r魔法值不足……需要魔法值："+skill.minusPP+"点";
 		setCooldown(item,skill.cooldown);
 		switch(skill.name) {
-		case "时空断裂": break;
+		case "Skill1": new Skill1(player, this.arenaId);break;
 		case "奥术护盾": break;
 		case "火球术": break;
-		case "霜冻术": break;
+		case "霜冻术": break; 
 		case "火焰喷发": break;
-		case "霜冻术": break;
-		
 		default: break;
-		}
-		
-		if (itemName.contains("时空断裂")) {
-			Location loc = player.getLocation().clone();
-			new BukkitRunnable() {
-				int counter = 0;
-
-				@Override
-				public void run() {
-					loc.getWorld().spawnParticle(Particle.CLOUD, loc, 10);
-					counter++;
-					if (counter >= 4 * 5) {
-						loc.getWorld().spawnParticle(Particle.END_ROD, loc, 2);
-						loc.getWorld().spawnParticle(Particle.END_ROD, player.getLocation(), 2);
-						player.teleport(loc);
-						player.setHealth((player.getHealth() + player.getMaxHealth() * 0.25) >= player.getMaxHealth()
-								? player.getMaxHealth()
-								: (player.getHealth() + player.getMaxHealth() * 0.25));
-						player.sendMessage("§6[战争领主]§r已经传送回原地并恢复大量血量！");
-						cancel();
-						return;
-					}
-				}
-			}.runTaskTimer(DarkArena.instance, 0L, 5L);
-		}
-		
-		if(itemName.contains("奥术护盾")) {
 		}
 		
 		return "";
@@ -97,12 +72,12 @@ public class SkillEffecter implements Listener{
 	private static void setCooldown(ItemStack item, int cd) {
 		Material material = item.getType();
 		new BukkitRunnable() {
-			int counter = 0;
+			int counter = 1;
 
 			@Override
 			public void run() {
 				item.setType(Material.SULPHUR);
-				item.setAmount(cd - counter);
+				item.setAmount(cd - counter + 1);
 				if (counter++ >= cd) {
 					item.setType(material);
 					cancel();

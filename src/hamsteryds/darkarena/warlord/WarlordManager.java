@@ -13,9 +13,12 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import hamsteryds.darkarena.DarkArena;
+import hamsteryds.darkarena.warlord.item.SkillEffecter;
+import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.task.CompassTargeter;
 import hamsteryds.darkarena.warlord.task.FlagGlowingSetter;
 import hamsteryds.darkarena.warlord.task.LastTimeCounter;
+import hamsteryds.darkarena.warlord.task.MagickaImprover;
 import hamsteryds.darkarena.warlord.task.ScaleBalancer;
 import hamsteryds.darkarena.warlord.util.WarlordArena;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
@@ -86,10 +89,12 @@ public class WarlordManager {
 		}
 		teams.get(arenaId).get(0).currentFlagLocation.getBlock().setType(Material.BEACON);
 		teams.get(arenaId).get(1).currentFlagLocation.getBlock().setType(Material.BEACON);
+		new SkillEffecter(arenaId);
 		new FlagGlowingSetter(arenaId);
 		new LastTimeCounter(arenaId);
 		new ScaleBalancer(arenaId);
 		new CompassTargeter(arenaId);
+		new MagickaImprover(arenaId);
 		return true;
 	}
 
@@ -115,6 +120,7 @@ public class WarlordManager {
 			StatsManager.playerDatas.get(uuid).totalMatch++;
 			StatsManager.playerDatas.get(uuid).totalATK += pl.totalATK;
 			StatsManager.playerDatas.get(uuid).totalCure += pl.totalCure;
+			StatsManager.playerDatas.get(uuid).totalKill += pl.kill;
 			if (pl.team == currentTeams.get(0))
 				winners.add(uuid);
 			if (pl.team == currentTeams.get(1))
@@ -143,6 +149,7 @@ public class WarlordManager {
 	public static void prideLoser(List<UUID> losers) {
 		for (UUID uuid : losers) {
 			Player player = Bukkit.getPlayer(uuid);
+			StatsManager.playerDatas.get(uuid).currentPlayStreak=0;
 			player.sendMessage("§6[战争领主]§r您的队伍失败！");
 		}
 	}
@@ -150,6 +157,9 @@ public class WarlordManager {
 	public static void prideWinner(List<UUID> winners) {
 		for (UUID uuid : winners) {
 			StatsManager.playerDatas.get(uuid).totalVictory++;
+			StatsManager.playerDatas.get(uuid).currentPlayStreak++;
+			if(StatsManager.playerDatas.get(uuid).currentPlayStreak>StatsManager.playerDatas.get(uuid).highestPlayStreak)
+				StatsManager.playerDatas.get(uuid).highestPlayStreak=StatsManager.playerDatas.get(uuid).currentPlayStreak;
 			Player player = Bukkit.getPlayer(uuid);
 			player.sendMessage("§6[战争领主]§r您的队伍获胜！");
 		}

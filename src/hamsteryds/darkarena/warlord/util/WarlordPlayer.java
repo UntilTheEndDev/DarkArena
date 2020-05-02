@@ -21,11 +21,13 @@ public class WarlordPlayer {
 	public List<UUID> attackTimeStamps;
 	public int totalATK;
 	public int totalCure;
+	public int maxMagicka;
 
-	public WarlordPlayer(int health, int magicka, int kill, int death, int assist, String arenaId, String name,
-			WarlordTeam team, WarlordTeam enemy, boolean isCarryingFlag) {
+	public WarlordPlayer(int health, int magicka, int maxMagicka, int kill, int death, int assist, String arenaId,
+			String name, WarlordTeam team, WarlordTeam enemy, boolean isCarryingFlag) {
 		this.health = health;
 		this.magicka = magicka;
+		this.maxMagicka = maxMagicka;
 		this.kill = kill;
 		this.death = death;
 		this.assist = assist;

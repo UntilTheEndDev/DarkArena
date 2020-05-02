@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import hamsteryds.darkarena.warlord.PAPIExpansion;
-import hamsteryds.darkarena.warlord.StatsManager;
 import hamsteryds.darkarena.warlord.WarlordManager;
 import hamsteryds.darkarena.warlord.listener.PlayerListener;
+import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.util.WarlordTeam.TeamType;
 
 public class DarkArena extends JavaPlugin {

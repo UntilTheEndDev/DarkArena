@@ -5,7 +5,8 @@ import java.util.UUID;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import hamsteryds.darkarena.warlord.StatsManager.Player$1;
+import hamsteryds.darkarena.warlord.stat.StatsManager;
+import hamsteryds.darkarena.warlord.stat.StatsManager.Player$1;
 import hamsteryds.darkarena.warlord.util.WarlordArena;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 import hamsteryds.darkarena.warlord.util.WarlordTeam;

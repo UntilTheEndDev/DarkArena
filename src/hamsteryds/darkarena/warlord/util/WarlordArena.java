@@ -53,7 +53,7 @@ public class WarlordArena implements Listener {
 			return "SUCCESSFULLY JOIN ANOTHER TEAM";
 		}
 		WarlordManager.players.get(this.arenaId).put(player.getUniqueId(), new WarlordPlayer((int) player.getHealth() * 200,
-				player.getFoodLevel() * 10, 0, 0, 0, this.arenaId, player.getName(), team, enemy, false));
+				player.getFoodLevel() * 10, 200, 0, 0, 0, this.arenaId, player.getName(), team, enemy, false));
 
 		if (players.keySet().size() * 2 >= this.maxPlayer && (!this.isTicking)) {
 			this.isTicking = true;
@@ -62,7 +62,6 @@ public class WarlordArena implements Listener {
 
 				@Override
 				public void run() {
-					cnt--;
 					if (cnt <= 0) {
 						WarlordManager.startArena(arenaId);
 						cancel();
@@ -76,6 +75,7 @@ public class WarlordArena implements Listener {
 									((Player)player).sendMessage("§6[战争领主]§r比赛将在" + cnt + "秒后开始");
 							}
 					}
+					cnt--;
 				}
 
 			}.runTaskTimer(DarkArena.instance, 0L, 20L);
