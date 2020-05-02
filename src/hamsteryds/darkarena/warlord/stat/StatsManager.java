@@ -71,9 +71,9 @@ public class StatsManager implements Listener {
 							yaml.getInt("archmage.sk4Level"), yaml.getInt("archmage.sk5Level"), yaml.getInt("archmage.attrib1Level"),
 							yaml.getInt("archmage.attrib2Level"), yaml.getInt("archmage.attrib3Level"), yaml.getInt("archmage.attrib4Level"),
 							yaml.getInt("archmage.attrib5Level"), yaml.getString("archmage.trainer"), yaml.getString("archmage.mastery"),
-							(Integer[])yaml.getIntegerList("archmage.blazeStats").toArray(),
-							(Integer[])yaml.getIntegerList("archmage.iceStats").toArray(),
-							(Integer[])yaml.getIntegerList("archmage.waterStats").toArray()));
+							yaml.getIntegerList("archmage.blazeStats"),
+							yaml.getIntegerList("archmage.iceStats"),
+							yaml.getIntegerList("archmage.waterStats")));
 		playerDatas.put(uuid, data);
 		saveData(player);
 	}

@@ -33,15 +33,15 @@ public class ArchmageManager {
 	public int attrib3Level;
 	public int attrib4Level;
 	public int attrib5Level;
-	public Integer[] blazeStats;
-	public Integer[] iceStats;
-	public Integer[] waterStats;
+	public List<Integer> blazeStats;
+	public List<Integer> iceStats;
+	public List<Integer> waterStats;
 	public ArchmageType trainer = ArchmageType.BLAZE;
 	public ArchmageType mastery = ArchmageType.NULL;
 
 	public ArchmageManager(int sk1Level, int sk2Level, int sk3Level, int sk4Level, int sk5Level, int attrib1Level,
 			int attrib2Level, int attrib3Level, int attrib4Level, int attrib5Level, String trainer, String mastery,
-			Integer[] blazeStats, Integer[] iceStats, Integer[] waterStats) {
+			List<Integer> blazeStats, List<Integer> iceStats,List<Integer> waterStats) {
 		this.sk1Level = sk1Level;
 		this.sk2Level = sk2Level;
 		this.sk3Level = sk3Level;
@@ -72,30 +72,33 @@ public class ArchmageManager {
 		this.attrib5Level = 0;
 		this.trainer = ArchmageType.BLAZE;
 		this.mastery = ArchmageType.NULL;
+		this.blazeStats = new ArrayList<Integer>();
+		this.iceStats = new ArrayList<Integer>();
+		this.waterStats = new ArrayList<Integer>();
 	}
 	
 	public void addFigure(int kill,int arena,int victory,int atk,int mvp) {
 		switch(this.trainer) {
 		case BLAZE: 
-			this.blazeStats[0]+=kill;
-			this.blazeStats[1]+=arena;
-			this.blazeStats[2]+=victory;
-			this.blazeStats[3]+=atk;
-			this.blazeStats[4]+=mvp;
+			this.blazeStats.set(0, blazeStats.get(0)+kill);
+			this.blazeStats.set(1, blazeStats.get(1)+arena);
+			this.blazeStats.set(2, blazeStats.get(2)+victory);
+			this.blazeStats.set(3, blazeStats.get(3)+atk);
+			this.blazeStats.set(4, blazeStats.get(4)+mvp);
 			break;
 		case ICE:
-			this.iceStats[0]+=kill;
-			this.iceStats[1]+=arena;
-			this.iceStats[2]+=victory;
-			this.iceStats[3]+=atk;
-			this.iceStats[4]+=mvp;
+			this.iceStats.set(0, iceStats.get(0)+kill);
+			this.iceStats.set(1, iceStats.get(1)+arena);
+			this.iceStats.set(2, iceStats.get(2)+victory);
+			this.iceStats.set(3, iceStats.get(3)+atk);
+			this.iceStats.set(4, iceStats.get(4)+mvp);
 			break;
 		case WATER:
-			this.waterStats[0]+=kill;
-			this.waterStats[1]+=arena;
-			this.waterStats[2]+=victory;
-			this.waterStats[3]+=atk;
-			this.waterStats[4]+=mvp;
+			this.waterStats.set(0, waterStats.get(0)+kill);
+			this.waterStats.set(1, waterStats.get(1)+arena);
+			this.waterStats.set(2, waterStats.get(2)+victory);
+			this.waterStats.set(3, waterStats.get(3)+atk);
+			this.waterStats.set(4, waterStats.get(4)+mvp);
 			break;
 		case NULL: 
 			break;

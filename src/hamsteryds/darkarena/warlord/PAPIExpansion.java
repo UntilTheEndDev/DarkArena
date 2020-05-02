@@ -50,35 +50,35 @@ public class PAPIExpansion extends PlaceholderExpansion {
 		} else if (identifier.equalsIgnoreCase("生涯治疗MVP数")) {
 			return String.valueOf(data.totalCureMVP);
 		} else if (identifier.equalsIgnoreCase("{blaze_kill}")) {
-			return String.valueOf(ps.archmage.blazeStats[0]); 
+			return String.valueOf(ps.archmage.blazeStats.get(0)); 
 		} else if (identifier.equalsIgnoreCase("{blaze_arena}")) {
-			return String.valueOf(ps.archmage.blazeStats[1]); 
+			return String.valueOf(ps.archmage.blazeStats.get(1)); 
 		} else if (identifier.equalsIgnoreCase("{blaze_victory}")) {
-			return String.valueOf(ps.archmage.blazeStats[2]); 
+			return String.valueOf(ps.archmage.blazeStats.get(2)); 
 		} else if (identifier.equalsIgnoreCase("{blaze_atk}")) {
-			return String.valueOf(ps.archmage.blazeStats[3]); 
+			return String.valueOf(ps.archmage.blazeStats.get(3)); 
 		} else if (identifier.equalsIgnoreCase("{blaze_mvp}")) {
-			return String.valueOf(ps.archmage.blazeStats[4]); 
+			return String.valueOf(ps.archmage.blazeStats.get(4)); 
 		} else if (identifier.equalsIgnoreCase("{ice_kill}")) {
-			return String.valueOf(ps.archmage.iceStats[0]); 
+			return String.valueOf(ps.archmage.iceStats.get(0)); 
 		} else if (identifier.equalsIgnoreCase("{ice_arena}")) {
-			return String.valueOf(ps.archmage.iceStats[1]); 
+			return String.valueOf(ps.archmage.iceStats.get(1)); 
 		} else if (identifier.equalsIgnoreCase("{ice_victory}")) {
-			return String.valueOf(ps.archmage.iceStats[2]); 
+			return String.valueOf(ps.archmage.iceStats.get(2)); 
 		} else if (identifier.equalsIgnoreCase("{ice_atk}")) {
-			return String.valueOf(ps.archmage.iceStats[3]); 
+			return String.valueOf(ps.archmage.iceStats.get(3)); 
 		} else if (identifier.equalsIgnoreCase("{ice_mvp}")) {
-			return String.valueOf(ps.archmage.iceStats[4]); 
+			return String.valueOf(ps.archmage.iceStats.get(4)); 
 		} else if (identifier.equalsIgnoreCase("{water_kill}")) {
-			return String.valueOf(ps.archmage.waterStats[0]); 
+			return String.valueOf(ps.archmage.waterStats.get(0)); 
 		} else if (identifier.equalsIgnoreCase("{water_arena}")) {
-			return String.valueOf(ps.archmage.waterStats[1]); 
+			return String.valueOf(ps.archmage.waterStats.get(1)); 
 		} else if (identifier.equalsIgnoreCase("{water_victory}")) {
-			return String.valueOf(ps.archmage.waterStats[2]); 
+			return String.valueOf(ps.archmage.waterStats.get(2)); 
 		} else if (identifier.equalsIgnoreCase("{water_atk}")) {
-			return String.valueOf(ps.archmage.waterStats[3]); 
+			return String.valueOf(ps.archmage.waterStats.get(3)); 
 		} else if (identifier.equalsIgnoreCase("{water_mvp}")) {
-			return String.valueOf(ps.archmage.waterStats[4]); 
+			return String.valueOf(ps.archmage.waterStats.get(4)); 
 		} else if (identifier.equalsIgnoreCase("{sk1Level}")) {
 			return String.valueOf(ps.archmage.sk1Level); 
 		} else if (identifier.equalsIgnoreCase("{sk2Level}")) {
