@@ -114,7 +114,7 @@ public class DarkArena extends JavaPlugin {
         HttpURLConnection connection = null;
         try {
             int timeout = 5000;
-            URL url = new URL("https://untiltheend.coding.net/p/UntilTheEnd/d/UntilTheEnd/git/raw/master/UTEversion.txt");
+            URL url = new URL("view-source:https://untiltheend.coding.net/p/DarkArena/d/DarkArena/git/raw/master/DAversion.txt");
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(timeout);
             InputStream inStream = connection.getInputStream();
