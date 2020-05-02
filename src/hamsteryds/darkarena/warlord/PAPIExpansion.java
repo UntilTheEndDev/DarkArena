@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import hamsteryds.darkarena.warlord.StatsManager.Player$1;
+import hamsteryds.darkarena.warlord.util.WarlordArena;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 import hamsteryds.darkarena.warlord.util.WarlordTeam;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -72,15 +73,15 @@ public class PAPIExpansion extends PlaceholderExpansion {
 		} else if (identifier.equalsIgnoreCase("生命值")) {
 			return String.valueOf(pl.health);
 		} else if (identifier.equalsIgnoreCase("同队旗帜状态")) {
-			return getFlagState(pl.team);
-		} else if (identifier.equalsIgnoreCase("敌对旗帜状态")) {
-			return getFlagState(pl.enemy);
+			return getFlagState(WarlordManager.arenas.get(arenaId),pl.team);
 		} else if (identifier.equalsIgnoreCase("敌队旗帜状态")) {
-			return String.valueOf(pl.health);
+			return getFlagState(WarlordManager.arenas.get(arenaId),pl.enemy);
 		} else
 			return "";
 	}
-	public String getFlagState(WarlordTeam team) {
+	public String getFlagState(WarlordArena arena, WarlordTeam team) {
+		if(arena.isWaiting)
+			return "等待生成中……";
 		if(team.isRespawningFlag)
 			return "重新生成中……";
 		if(team.currentFlagLocation.getBlock().getType()!=Material.BEACON)

@@ -46,7 +46,6 @@ public class DarkArena extends JavaPlugin {
 						return true;
 					}
 					switch(WarlordManager.arenas.get(contents[1]).addPlayer((Player) sender,TeamType.valueOf(contents[2]))) {
-					
 					case "STARTED":
 						sender.sendMessage("§6[战争领主]§r无法加入游戏：已经开始");
 						break;

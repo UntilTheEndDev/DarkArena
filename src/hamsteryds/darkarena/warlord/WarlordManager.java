@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.task.CompassTargeter;
+import hamsteryds.darkarena.warlord.task.FlagGlowingSetter;
 import hamsteryds.darkarena.warlord.task.LastTimeCounter;
 import hamsteryds.darkarena.warlord.task.ScaleBalancer;
 import hamsteryds.darkarena.warlord.util.WarlordArena;
@@ -85,6 +86,7 @@ public class WarlordManager {
 		}
 		teams.get(arenaId).get(0).currentFlagLocation.getBlock().setType(Material.BEACON);
 		teams.get(arenaId).get(1).currentFlagLocation.getBlock().setType(Material.BEACON);
+		new FlagGlowingSetter(arenaId);
 		new LastTimeCounter(arenaId);
 		new ScaleBalancer(arenaId);
 		new CompassTargeter(arenaId);

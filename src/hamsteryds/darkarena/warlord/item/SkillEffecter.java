@@ -1,23 +1,70 @@
 package hamsteryds.darkarena.warlord.item;
 
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
+import hamsteryds.darkarena.warlord.WarlordManager;
+import hamsteryds.darkarena.warlord.item.skill.NormalSkill;
 
-public class SkillEffecter {
-	public static void effect(ItemStack item, Player player) {
+public class SkillEffecter implements Listener{
+	private String arenaId;
+	public static HashMap<String,NormalSkill> skills=new HashMap<String,NormalSkill>();
+	
+	public SkillEffecter(String arenaId) {
+		this.arenaId=arenaId;
+		Bukkit.getServer().getPluginManager().registerEvents(this,DarkArena.instance);
+	}
+	
+	@EventHandler
+	public void onClick(PlayerInteractEvent event) {
+		if (!WarlordManager.arenas.get(this.arenaId).isRunning)
+			return;
+		if (!event.hasItem())
+			return;
+		ItemStack item = event.getItem();
+		if (item.hasItemMeta())
+			if (item.getItemMeta().hasDisplayName()){
+				String message=effect(item, event.getPlayer());
+				if(!message.equalsIgnoreCase(""))
+					event.getPlayer().sendMessage(message);
+			}
+	}
+	
+	
+	public String effect(ItemStack item, Player player) {
 		Material material = item.getType();
 		if (material == ItemFactory.fromLegacy(Material.SULPHUR))
-			return;
+			return "§6[战争领主]§r技能冷却中……还剩下"+item.getAmount()+"秒";
 		String itemName = item.getItemMeta().getDisplayName();
+		if(!skills.containsKey(itemName))
+			return "";
+		NormalSkill skill=skills.get(itemName);
+		if(WarlordManager.players.get(this.arenaId).get(player.getUniqueId()).magicka<skill.minusPP)
+			return "§6[战争领主]§r魔法值不足……需要魔法值："+skill.minusPP+"点";
+		setCooldown(item,skill.cooldown);
+		switch(skill.name) {
+		case "时空断裂": break;
+		case "奥术护盾": break;
+		case "火球术": break;
+		case "霜冻术": break;
+		case "火焰喷发": break;
+		case "霜冻术": break;
+		
+		default: break;
+		}
 		
 		if (itemName.contains("时空断裂")) {
-			setCooldowning(item, 20);
 			Location loc = player.getLocation().clone();
 			new BukkitRunnable() {
 				int counter = 0;
@@ -42,11 +89,12 @@ public class SkillEffecter {
 		}
 		
 		if(itemName.contains("奥术护盾")) {
-			setCooldowning(item, 20);
 		}
+		
+		return "";
 	}
 
-	private static void setCooldowning(ItemStack item, int cd) {
+	private static void setCooldown(ItemStack item, int cd) {
 		Material material = item.getType();
 		new BukkitRunnable() {
 			int counter = 0;

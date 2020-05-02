@@ -25,7 +25,7 @@ public class CompassTargeter extends BukkitRunnable implements Listener {
 		for (UUID uuid : WarlordManager.players.get(arenaId).keySet()) 
 			pointTeamFlag.add(uuid);
 		this.runTaskTimer(DarkArena.instance,0L,20L);
-		DarkArena.instance.getServer().getPluginManager().registerEvents(this,DarkArena.instance);
+		Bukkit.getServer().getPluginManager().registerEvents(this,DarkArena.instance);
 	}
 
 	@Override

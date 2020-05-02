@@ -15,16 +15,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.WarlordManager;
-import hamsteryds.darkarena.warlord.item.SkillEffecter;
 import hamsteryds.darkarena.warlord.util.WarlordPlayer;
 
 public class PlayerListener implements Listener {
@@ -125,6 +123,7 @@ public class PlayerListener implements Listener {
 				pl.enemy.currentFlagLocation = death;
 				player.getLocation().getBlock().setType(Material.BEACON);
 				pl.isCarryingFlag = false;
+				pl.enemy.whoIsCarrying = null;
 
 				this.announcePlayer(pl, "§6[战争领主]§r玩家" + pl.name + "掉落了敌方旗帜，30秒后自动传回大本营！",
 						"§6[战争领主]§r玩家" + pl.name + "掉落了我方旗帜，30秒后自动传回大本营！");
@@ -146,24 +145,28 @@ public class PlayerListener implements Listener {
 					}
 				}.runTaskLater(DarkArena.instance, 600L);
 			}
-			// 击杀
-			UUID killer = pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1);
-			if (pl.attackTimeStamps.size() == 0)
-				return;
-			if (WarlordManager.players.get(this.arenaId).containsKey(killer)) {
-				WarlordPlayer kpl = WarlordManager.players.get(this.arenaId).get(killer);
-				kpl.kill++;
+			try {
+				// 击杀
+				UUID killer = pl.attackTimeStamps.get(pl.attackTimeStamps.size() - 1);
+				if (pl.attackTimeStamps.size() == 0)
+					return;
+				if (WarlordManager.players.get(this.arenaId).containsKey(killer)) {
+					WarlordPlayer kpl = WarlordManager.players.get(this.arenaId).get(killer);
+					kpl.kill++;
+				}
+				// 助攻
+				UUID assist = killer;
+				for (UUID damager : pl.attackAmountStamps.keySet()) {
+					if (damager.equals(killer))
+						continue;
+					if (pl.attackAmountStamps.get(damager) >= pl.attackAmountStamps.get(assist))
+						assist = damager;
+				}
+				if ((!assist.equals(killer)) && WarlordManager.players.get(this.arenaId).containsKey(assist))
+					WarlordManager.players.get(this.arenaId).get(assist).assist++;
+			} catch (Exception e) {
+
 			}
-			// 助攻
-			UUID assist=killer;
-			for (UUID damager : pl.attackAmountStamps.keySet()) {
-				if (damager.equals(killer)) 
-					continue;
-				if (pl.attackAmountStamps.get(damager) >= pl.attackAmountStamps.get(assist))
-					assist = damager;
-			} 
-			if ((!assist.equals(killer))&&WarlordManager.players.get(this.arenaId).containsKey(assist))
-				WarlordManager.players.get(this.arenaId).get(assist).assist++;
 			// 击杀数据清空结算
 			pl.death++;
 			pl.enemy.currentScore += 5;
@@ -185,7 +188,7 @@ public class PlayerListener implements Listener {
 				&& WarlordManager.players.get(this.arenaId).containsKey(damagee.getUniqueId())) {
 			WarlordPlayer derpl = WarlordManager.players.get(this.arenaId).get(damager.getUniqueId());
 			WarlordPlayer deepl = WarlordManager.players.get(this.arenaId).get(damagee.getUniqueId());
-			if (derpl == deepl) {
+			if (derpl.team == deepl.team) {
 				event.setCancelled(true);
 			} else {
 				// 时间戳记录
@@ -213,15 +216,9 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onClick(PlayerInteractEvent event) {
-		if (!WarlordManager.arenas.get(this.arenaId).isRunning)
-			return;
-		if (!event.hasItem())
-			return;
-		ItemStack item = event.getItem();
-		if (item.hasItemMeta())
-			if (item.getItemMeta().hasDisplayName())
-				SkillEffecter.effect(item, event.getPlayer());
+	public void onInventoryEvent(InventoryClickEvent event) {
+		if (WarlordManager.players.get(this.arenaId).containsKey(event.getWhoClicked().getUniqueId()))
+			event.setCancelled(true);
 	}
 
 	public void announcePlayer(WarlordPlayer pl, String teamMessage, String enemyMessage) {

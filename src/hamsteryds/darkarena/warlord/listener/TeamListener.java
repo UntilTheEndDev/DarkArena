@@ -59,6 +59,7 @@ public class TeamListener implements Listener {
 				if ((!pl.isCarryingFlag) && loc.equals(pl.enemy.currentFlagLocation)
 						&& block.getType() == Material.BEACON) {
 					pl.isCarryingFlag = true;
+					pl.enemy.whoIsCarrying=player.getUniqueId();
 					block.setType(Material.AIR);
 					player.sendMessage("§6[战争领主]§r您成功抢夺了旗帜");
 					this.announcePlayer(pl, "§6[战争领主]§r" + pl.name + "拿到了敌对的旗帜，快去掩护他！",
@@ -71,7 +72,8 @@ public class TeamListener implements Listener {
 				if (pl.isCarryingFlag) {
 					if (loc.equals(pl.team.currentFlagLocation)) {
 						pl.team.currentScore += 250;
-
+						
+						pl.enemy.whoIsCarrying=null;
 						pl.team.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.enemy.currentFlagLocation.getBlock().setType(Material.AIR);
 						pl.isCarryingFlag = false;
