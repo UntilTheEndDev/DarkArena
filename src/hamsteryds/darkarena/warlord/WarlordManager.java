@@ -105,7 +105,7 @@ public class WarlordManager {
 		List<UUID> losers = new ArrayList<UUID>();
 		int score1 = currentTeams.get(0).currentScore;
 		int score2 = currentTeams.get(1).currentScore;
-		UUID ATKMVP=null, CureMVP=null;
+		UUID ATKMVP = null, CureMVP = null;
 		int atk = 0, cure = 0;
 		for (UUID uuid : currentPlayers.keySet()) {
 			WarlordPlayer pl = currentPlayers.get(uuid);
@@ -125,11 +125,16 @@ public class WarlordManager {
 				winners.add(uuid);
 			if (pl.team == currentTeams.get(1))
 				losers.add(uuid);
+
+			StatsManager.playerDatas.get(uuid).archmage.addFigure(pl.kill, 1, 0, pl.totalATK, 0);
 		}
-		if (ATKMVP != null)
+		if (ATKMVP != null) {
 			StatsManager.playerDatas.get(ATKMVP).totalATKMVP++;
-		if (CureMVP != null)
+			StatsManager.playerDatas.get(ATKMVP).archmage.addFigure(0, 0, 0, 0, 1);
+		}
+		if (CureMVP != null) {
 			StatsManager.playerDatas.get(CureMVP).totalCureMVP++;
+		}
 		boolean flag = false;
 		if (score1 < score2)
 			flag = true;
@@ -149,18 +154,22 @@ public class WarlordManager {
 	public static void prideLoser(List<UUID> losers) {
 		for (UUID uuid : losers) {
 			Player player = Bukkit.getPlayer(uuid);
-			StatsManager.playerDatas.get(uuid).currentPlayStreak=0;
+			StatsManager.playerDatas.get(uuid).currentPlayStreak = 0;
 			player.sendMessage("§6[战争领主]§r您的队伍失败！");
 		}
 	}
 
 	public static void prideWinner(List<UUID> winners) {
 		for (UUID uuid : winners) {
+
 			StatsManager.playerDatas.get(uuid).totalVictory++;
 			StatsManager.playerDatas.get(uuid).currentPlayStreak++;
-			if(StatsManager.playerDatas.get(uuid).currentPlayStreak>StatsManager.playerDatas.get(uuid).highestPlayStreak)
-				StatsManager.playerDatas.get(uuid).highestPlayStreak=StatsManager.playerDatas.get(uuid).currentPlayStreak;
+			if (StatsManager.playerDatas.get(uuid).currentPlayStreak > StatsManager.playerDatas
+					.get(uuid).highestPlayStreak)
+				StatsManager.playerDatas.get(uuid).highestPlayStreak = StatsManager.playerDatas
+						.get(uuid).currentPlayStreak;
 			Player player = Bukkit.getPlayer(uuid);
+			StatsManager.playerDatas.get(uuid).archmage.addFigure(0, 0, 1, 0, 0);
 			player.sendMessage("§6[战争领主]§r您的队伍获胜！");
 		}
 	}

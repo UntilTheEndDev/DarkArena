@@ -73,6 +73,34 @@ public class ArchmageManager {
 		this.trainer = ArchmageType.BLAZE;
 		this.mastery = ArchmageType.NULL;
 	}
+	
+	public void addFigure(int kill,int arena,int victory,int atk,int mvp) {
+		switch(this.trainer) {
+		case BLAZE: 
+			this.blazeStats[0]+=kill;
+			this.blazeStats[1]+=arena;
+			this.blazeStats[2]+=victory;
+			this.blazeStats[3]+=atk;
+			this.blazeStats[4]+=mvp;
+			break;
+		case ICE:
+			this.iceStats[0]+=kill;
+			this.iceStats[1]+=arena;
+			this.iceStats[2]+=victory;
+			this.iceStats[3]+=atk;
+			this.iceStats[4]+=mvp;
+			break;
+		case WATER:
+			this.waterStats[0]+=kill;
+			this.waterStats[1]+=arena;
+			this.waterStats[2]+=victory;
+			this.waterStats[3]+=atk;
+			this.waterStats[4]+=mvp;
+			break;
+		case NULL: 
+			break;
+		}
+	}
 
 	public int getTotalLevel() {
 		return sk1Level + sk2Level + sk3Level + sk4Level + sk5Level + attrib1Level + attrib2Level + attrib3Level
@@ -193,7 +221,7 @@ public class ArchmageManager {
 		return inv;
 	}
 
-	enum ArchmageType {
+	public enum ArchmageType {
 		BLAZE("火焰法师"), ICE("寒冰法师"), WATER("水系法师"), NULL("无");
 		public String name;
 

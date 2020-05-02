@@ -71,6 +71,10 @@ public class DarkArena extends JavaPlugin {
 						player.sendMessage("§6[战争领主]§r重新加入游戏失败");
 					}
 				}
+				if(contents[0].equals("archmage")) {
+					StatsManager.Player$1 pl=StatsManager.playerDatas.get(player.getUniqueId());
+					player.openInventory(pl.archmage.getInfoInventory(player));
+				}
 				if(contents[0].equals("archmagelevel")) {
 					StatsManager.Player$1 pl=StatsManager.playerDatas.get(player.getUniqueId());
 					player.openInventory(pl.archmage.getSkillInventory(pl));
