@@ -1,5 +1,5 @@
 name: DarkArena
-version: 1.6-Release
+version: 1.6.1-Release
 authors: [HamsterYDS]
 depend: [PlaceholderAPI]
 main: hamsteryds.darkarena.DarkArena
