@@ -19,7 +19,7 @@ import hamsteryds.darkarena.warlord.stat.gui.ArchmageSkill;
 
 public class NormalAttack {
 	private String arenaId;
-	private Player player;
+	private Player player; 
 
 	public NormalAttack(Player player, String arenaId) {
 		this.player = player;
