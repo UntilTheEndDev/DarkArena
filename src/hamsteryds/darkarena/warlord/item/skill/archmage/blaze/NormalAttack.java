@@ -27,7 +27,7 @@ public class NormalAttack {
 		Location loc = player.getLocation().add(0, 1.25, 0);
 		Vector vec = player.getEyeLocation().getDirection().multiply(1);
 		int level = StatsManager.playerDatas.get(player.getUniqueId()).archmage.sk1Level;
-		double add = ArchmageSkill.sk1Figures.get(level).get("{blaze}");
+		double add = level==0?0:ArchmageSkill.sk1Figures.get(level).get("{blaze}");
 		new BukkitRunnable() {
 			int counter = 0;
 
