@@ -19,6 +19,7 @@ import hamsteryds.darkarena.warlord.stat.ArchmageManager;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.stat.container.Archmage.ChangeType;
 import hamsteryds.darkarena.warlord.stat.container.Archmage.VariableType;
+import hamsteryds.darkarena.warlord.stat.gui.ArchmageInfo;
 import hamsteryds.darkarena.warlord.util.WarlordTeam.TeamType;
 
 public class DarkArena extends JavaPlugin {
@@ -84,7 +85,7 @@ public class DarkArena extends JavaPlugin {
 				}
 				if(contents[0].equals("archmage")) {
 					StatsManager.Player$1 pl=StatsManager.playerDatas.get(player.getUniqueId());
-					player.openInventory(ArchmageManager.getInfoInventory(player));
+					player.openInventory(ArchmageInfo.getInfoInventory(player));
 				}
 				if(contents[0].equals("money")) {
 					Player changee=Bukkit.getPlayer(contents[2]);
