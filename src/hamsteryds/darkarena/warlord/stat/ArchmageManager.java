@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import hamsteryds.darkarena.DarkArena;
+import hamsteryds.darkarena.warlord.stat.gui.ArchmageChoose;
 import hamsteryds.darkarena.warlord.stat.gui.ArchmageInfo;
 import hamsteryds.darkarena.warlord.stat.gui.ArchmageSkill;
 import hamsteryds.darkarena.warlord.stat.gui.WarlordInvHolder;
@@ -24,15 +25,13 @@ public class ArchmageManager {
 
 		@EventHandler
 		public void onOpen(InventoryOpenEvent event) {
-			if (event.getInventory().getHolder() instanceof WarlordInvHolder.ArchmageSkillInvHolder
-					|| event.getInventory().getHolder() instanceof WarlordInvHolder.ArchmageInfoInvHolder)
+			if (event.getInventory().getHolder() instanceof WarlordInvHolder)
 				openers.add(event.getPlayer().getUniqueId());
 		}
 
 		@EventHandler
 		public void onClose(InventoryCloseEvent event) {
-			if (event.getInventory().getHolder() instanceof WarlordInvHolder.ArchmageSkillInvHolder
-					|| event.getInventory().getHolder() instanceof WarlordInvHolder.ArchmageInfoInvHolder)
+			if (event.getInventory().getHolder() instanceof WarlordInvHolder)
 				openers.remove(event.getPlayer().getUniqueId());
 		}
 
@@ -67,7 +66,7 @@ public class ArchmageManager {
 					if (36 <= slot && slot < 45)
 						pl.archmage.sk5Level++;
 					player.openInventory(ArchmageSkill.getSkillInventory(player));
-				}
+				} 
 				if (slot == 48)
 					player.openInventory(ArchmageInfo.getInfoInventory(player));
 			}
@@ -77,6 +76,26 @@ public class ArchmageManager {
 				StatsManager.Player$1 pl = StatsManager.playerDatas.get(player.getUniqueId());
 				if (event.getSlot() == 31) {
 					event.getWhoClicked().openInventory(ArchmageSkill.getSkillInventory(player));
+				}
+				if (event.getSlot() == 29) {
+					event.getWhoClicked().openInventory(ArchmageChoose.getChooseInventory(player));
+				}
+			}
+			if (event.getClickedInventory().getHolder() instanceof WarlordInvHolder.ArchmageChooseInvHolder) {
+				event.setCancelled(true);
+				Player player = (Player) event.getWhoClicked();
+				StatsManager.Player$1 pl = StatsManager.playerDatas.get(player.getUniqueId());
+				if (event.getSlot() == 11) {
+					pl.archmage.trainer=ArchmageType.BLAZE;
+					player.sendMessage("§6[战争领主]§r设置成功，目前法师职业：§a"+ArchmageType.BLAZE.name);
+				}
+				if (event.getSlot() == 13) {
+					pl.archmage.trainer=ArchmageType.ICE;
+					player.sendMessage("§6[战争领主]§r设置成功，目前法师职业：§a"+ArchmageType.ICE.name);
+				}
+				if (event.getSlot() == 15) {
+					pl.archmage.trainer=ArchmageType.WATER;
+					player.sendMessage("§6[战争领主]§r设置成功，目前法师职业：§a"+ArchmageType.WATER.name);
 				}
 			}
 		}
@@ -95,6 +114,7 @@ public class ArchmageManager {
 		DarkArena.instance.saveResource("archmage.yml", false);
 		ArchmageInfo.initModelInfoInventory();
 		ArchmageSkill.initModelSkillInventory();
+		ArchmageChoose.initModelChooseInventory();
 		Bukkit.getPluginManager().registerEvents(new InventoryListener(), DarkArena.instance);
 	}
 }

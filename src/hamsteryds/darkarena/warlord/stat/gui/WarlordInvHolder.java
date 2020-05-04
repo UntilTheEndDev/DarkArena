@@ -4,7 +4,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
 public class WarlordInvHolder {
-	public static class ArchmageChooseInvHolder implements InventoryHolder {
+	public static class ArchmageChooseInvHolder extends WarlordInvHolder implements InventoryHolder {
 		public static final ArchmageChooseInvHolder INSTANCE = new ArchmageChooseInvHolder();
 	
 		@Override
@@ -13,7 +13,7 @@ public class WarlordInvHolder {
 		}
 	}
 	
-	public static class ArchmageAttributeInvHolder implements InventoryHolder {
+	public static class ArchmageAttributeInvHolder extends WarlordInvHolder implements InventoryHolder {
 		public static final ArchmageAttributeInvHolder INSTANCE = new ArchmageAttributeInvHolder();
 	
 		@Override
@@ -22,7 +22,7 @@ public class WarlordInvHolder {
 		}
 	}
 
-	public static class ArchmageInfoInvHolder implements InventoryHolder {
+	public static class ArchmageInfoInvHolder extends WarlordInvHolder implements InventoryHolder {
 		public static final ArchmageInfoInvHolder INSTANCE = new ArchmageInfoInvHolder();
 	
 		@Override
@@ -31,7 +31,7 @@ public class WarlordInvHolder {
 		}
 	}
 
-	public static class ArchmageSkillInvHolder implements InventoryHolder {
+	public static class ArchmageSkillInvHolder extends WarlordInvHolder implements InventoryHolder {
 		public static final ArchmageSkillInvHolder INSTANCE = new ArchmageSkillInvHolder();
 	
 		@Override

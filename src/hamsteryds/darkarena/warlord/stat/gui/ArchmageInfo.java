@@ -13,7 +13,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class ArchmageInfo {
-	public static Inventory modelInfoInventory = Bukkit.createInventory(WarlordInvHolder.ArchmageInfoInvHolder.INSTANCE, 45, "法师职业信息");
+	public static Inventory modelInfoInventory = Bukkit.createInventory(WarlordInvHolder.ArchmageInfoInvHolder.INSTANCE,
+			45, "法师职业信息");
+
 	public static Inventory getInfoInventory(Player player) {
 		Inventory inv = Bukkit.createInventory(WarlordInvHolder.ArchmageInfoInvHolder.INSTANCE, 54, "法师职业信息");
 		inv.setContents(modelInfoInventory.getContents());
@@ -26,16 +28,14 @@ public class ArchmageInfo {
 			ItemMeta meta = item.getItemMeta();
 			if (meta.hasLore()) {
 				List<String> lore = meta.getLore();
-				for (int index = 0; index < lore.size(); index++) {
-					lore.set(index, PlaceholderAPI.setPlaceholders(player, lore.get(index)));
-				}
+				lore = PlaceholderAPI.setPlaceholders(player, lore);
 				meta.setLore(lore);
 			}
-			item.setItemMeta(meta); 
+			item.setItemMeta(meta);
 		}
 		return inv;
 	}
-	
+
 	public static void initModelInfoInventory() {
 		ItemStack item = new ItemStack(Material.PAINTING);
 		ItemMeta meta = item.getItemMeta();

@@ -20,7 +20,8 @@ import hamsteryds.darkarena.warlord.stat.StatsManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class ArchmageSkill {
-	public static Inventory modelSkillInventory = Bukkit.createInventory(WarlordInvHolder.ArchmageSkillInvHolder.INSTANCE, 54, "法师技能升级");
+	public static Inventory modelSkillInventory = Bukkit
+			.createInventory(WarlordInvHolder.ArchmageSkillInvHolder.INSTANCE, 54, "法师技能升级");
 	public static HashMap<Integer, HashMap<String, Double>> sk1Figures = new HashMap<Integer, HashMap<String, Double>>();
 
 	public static void initSkFigures() {
@@ -123,9 +124,7 @@ public class ArchmageSkill {
 			if (pl.archmage.sk1Level == slot + 1) {
 				infoLore.add(lore.get(specialIndex));
 			}
-			for (int index = 0; index < infoLore.size(); index++) {
-				infoLore.set(index, PlaceholderAPI.setPlaceholders(player, infoLore.get(index)));
-			}
+			infoLore = PlaceholderAPI.setPlaceholders(player, infoLore);
 			meta.setLore(lore);
 			item.setItemMeta(meta);
 		}

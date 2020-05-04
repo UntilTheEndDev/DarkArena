@@ -6,7 +6,7 @@ import org.bukkit.inventory.Inventory;
 public class ArchmageAttribute {
 	public static Inventory modelAttributeInventory = Bukkit.createInventory(WarlordInvHolder.ArchmageAttributeInvHolder.INSTANCE, 54, "法师属性升级");
 	
-	public static void initModelSkillInventory() {
+	public static void initModelAttributeInventory() {
 		
 	}
 }
