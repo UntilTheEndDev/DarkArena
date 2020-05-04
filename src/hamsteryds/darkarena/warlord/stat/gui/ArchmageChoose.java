@@ -79,8 +79,9 @@ public class ArchmageChoose {
 			ItemMeta meta = item.getItemMeta();
 			if (meta == null)
 				continue;
-			if (meta.hasDisplayName())
+			if (meta.hasDisplayName()){
 				meta.setDisplayName(PlaceholderAPI.setPlaceholders(player, meta.getDisplayName()));
+			}
 			if (meta.hasLore())
 				meta.setLore(PlaceholderAPI.setPlaceholders(player, meta.getLore()));
 			item.setItemMeta(meta);

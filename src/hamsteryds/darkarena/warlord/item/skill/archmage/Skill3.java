@@ -1,4 +1,4 @@
-package hamsteryds.darkarena.warlord.item.skill;
+package hamsteryds.darkarena.warlord.item.skill.archmage;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -7,10 +7,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
 
-public class Skill1{
+public class Skill3{
 	private Player player;
 	private String arenaId;
-	public Skill1(Player player,String arenaId) {
+	public Skill3(Player player,String arenaId) {
 		this.player=player;
 		this.arenaId=arenaId;
 		Location loc=player.getLocation();
