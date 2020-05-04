@@ -15,9 +15,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.stat.gui.ArchmageInfo;
-import hamsteryds.darkarena.warlord.stat.gui.ArchmageInfo.ArchmageInfoInvHolder;
 import hamsteryds.darkarena.warlord.stat.gui.ArchmageSkill;
-import hamsteryds.darkarena.warlord.stat.gui.ArchmageSkill.ArchmageSkillInvHolder;
+import hamsteryds.darkarena.warlord.stat.gui.WarlordInvHolder;
 
 public class ArchmageManager {
 	public static class InventoryListener implements Listener {
@@ -25,15 +24,15 @@ public class ArchmageManager {
 
 		@EventHandler
 		public void onOpen(InventoryOpenEvent event) {
-			if (event.getInventory().getHolder() instanceof ArchmageSkillInvHolder
-					|| event.getInventory().getHolder() instanceof ArchmageInfoInvHolder)
+			if (event.getInventory().getHolder() instanceof WarlordInvHolder.ArchmageSkillInvHolder
+					|| event.getInventory().getHolder() instanceof WarlordInvHolder.ArchmageInfoInvHolder)
 				openers.add(event.getPlayer().getUniqueId());
 		}
 
 		@EventHandler
 		public void onClose(InventoryCloseEvent event) {
-			if (event.getInventory().getHolder() instanceof ArchmageSkillInvHolder
-					|| event.getInventory().getHolder() instanceof ArchmageInfoInvHolder)
+			if (event.getInventory().getHolder() instanceof WarlordInvHolder.ArchmageSkillInvHolder
+					|| event.getInventory().getHolder() instanceof WarlordInvHolder.ArchmageInfoInvHolder)
 				openers.remove(event.getPlayer().getUniqueId());
 		}
 
@@ -47,7 +46,7 @@ public class ArchmageManager {
 		public void onClick(InventoryClickEvent event) {
 			if (event.getClickedInventory() == null)
 				return;
-			if (event.getClickedInventory().getHolder() instanceof ArchmageSkillInvHolder) {
+			if (event.getClickedInventory().getHolder() instanceof WarlordInvHolder.ArchmageSkillInvHolder) {
 				event.setCancelled(true);
 				ItemStack item = event.getCurrentItem();
 				int slot = event.getSlot();
@@ -72,7 +71,7 @@ public class ArchmageManager {
 				if (slot == 48)
 					player.openInventory(ArchmageInfo.getInfoInventory(player));
 			}
-			if (event.getClickedInventory().getHolder() instanceof ArchmageInfoInvHolder) {
+			if (event.getClickedInventory().getHolder() instanceof WarlordInvHolder.ArchmageInfoInvHolder) {
 				event.setCancelled(true);
 				Player player = (Player) event.getWhoClicked();
 				StatsManager.Player$1 pl = StatsManager.playerDatas.get(player.getUniqueId());

@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -21,17 +20,8 @@ import hamsteryds.darkarena.warlord.stat.StatsManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class ArchmageSkill {
-	public static Inventory modelSkillInventory = Bukkit.createInventory(ArchmageSkillInvHolder.INSTANCE, 54, "法师技能升级");
+	public static Inventory modelSkillInventory = Bukkit.createInventory(WarlordInvHolder.ArchmageSkillInvHolder.INSTANCE, 54, "法师技能升级");
 	public static HashMap<Integer, HashMap<String, Double>> sk1Figures = new HashMap<Integer, HashMap<String, Double>>();
-
-	public static class ArchmageSkillInvHolder implements InventoryHolder {
-		public static final ArchmageSkillInvHolder INSTANCE = new ArchmageSkillInvHolder();
-
-		@Override
-		public Inventory getInventory() {
-			return null;
-		}
-	}
 
 	public static void initSkFigures() {
 		File file = new File(DarkArena.instance.getDataFolder(), "archmage.yml");
@@ -83,7 +73,7 @@ public class ArchmageSkill {
 
 	public static Inventory getSkillInventory(Player player) {
 		StatsManager.Player$1 pl = StatsManager.playerDatas.get(player.getUniqueId());
-		Inventory inv = Bukkit.createInventory(ArchmageSkillInvHolder.INSTANCE, 54, "法师技能升级");
+		Inventory inv = Bukkit.createInventory(WarlordInvHolder.ArchmageSkillInvHolder.INSTANCE, 54, "法师技能升级");
 		inv.setContents(modelSkillInventory.getContents());
 		List<String> infoLore = new ArrayList<String>();
 		infoLore.add("§7目前等级：§a%warlord_{archmage_level}%");

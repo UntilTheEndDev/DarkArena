@@ -7,25 +7,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class ArchmageInfo {
-	public static Inventory modelInfoInventory = Bukkit.createInventory(ArchmageInfoInvHolder.INSTANCE, 45, "法师职业信息");
-	public static class ArchmageInfoInvHolder implements InventoryHolder {
-		public static final ArchmageInfoInvHolder INSTANCE = new ArchmageInfoInvHolder();
-
-		@Override
-		public Inventory getInventory() {
-			return null;
-		}
-	}
-	
+	public static Inventory modelInfoInventory = Bukkit.createInventory(WarlordInvHolder.ArchmageInfoInvHolder.INSTANCE, 45, "法师职业信息");
 	public static Inventory getInfoInventory(Player player) {
-		Inventory inv = Bukkit.createInventory(ArchmageInfoInvHolder.INSTANCE, 54, "法师职业信息");
+		Inventory inv = Bukkit.createInventory(WarlordInvHolder.ArchmageInfoInvHolder.INSTANCE, 54, "法师职业信息");
 		inv.setContents(modelInfoInventory.getContents());
 		for (int slot = 0; slot < 54; slot++) {
 			ItemStack item = inv.getItem(slot);
