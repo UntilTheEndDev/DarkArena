@@ -29,10 +29,10 @@ public class ArchmageSkill {
 		YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
 		for (String level : yaml.getKeys(false)) {
 			HashMap<String, Double> figure = new HashMap<String, Double>();
-			figure.put("{blaze}", yaml.getDouble(level + ".sk1.blaze"));
-			figure.put("{ice1}", yaml.getDouble(level + ".sk1.ice1"));
-			figure.put("{ice2}", yaml.getDouble(level + ".sk1.ice2"));
-			figure.put("{water}", yaml.getDouble(level + ".sk1.water"));
+			figure.put("{blaze}", yaml.getDouble(level + ".atk.blaze"));
+			figure.put("{ice1}", yaml.getDouble(level + ".atk.ice1"));
+			figure.put("{ice2}", yaml.getDouble(level + ".atk.ice2"));
+			figure.put("{water}", yaml.getDouble(level + ".atk.water"));
 			sk1Figures.put(Integer.valueOf(level.replace("level", "")), figure);
 		}
 	}
@@ -46,17 +46,17 @@ public class ArchmageSkill {
 			costs[i] -= costs[i] % 10;
 		}
 		for (int slot = 0; slot < 9; slot++)
-			modelSkillInventory.setItem(slot, getSkItem(slot, costs[slot], "一技能", "§7火焰法师：火球术额外造成{blaze}的伤害",
+			modelSkillInventory.setItem(slot, getSkItem(slot, costs[slot], "普攻技能", "§7火焰法师：火球术额外造成{blaze}的伤害",
 					"§7寒冰法师：霜冻术额外造成{ice1}的伤害，额外降低{ice2}的移动速度", "§7水系法师：涌泉术额外回复{water}生命值"));
 		for (int slot = 0; slot < 9; slot++)
 			modelSkillInventory.setItem(slot + 9,
-					getSkItem(slot, costs[slot], "二技能", "§7火焰法师：未开放", "§7寒冰法师：未开放", "§7水系法师：未开放"));
+					getSkItem(slot, costs[slot], "一技能", "§7火焰法师：未开放", "§7寒冰法师：未开放", "§7水系法师：未开放"));
 		for (int slot = 0; slot < 9; slot++)
 			modelSkillInventory.setItem(slot + 18,
-					getSkItem(slot, costs[slot], "三技能", "§7火焰法师：未开放", "§7寒冰法师：未开放", "§7水系法师：未开放"));
+					getSkItem(slot, costs[slot], "二技能", "§7火焰法师：未开放", "§7寒冰法师：未开放", "§7水系法师：未开放"));
 		for (int slot = 0; slot < 9; slot++)
 			modelSkillInventory.setItem(slot + 27,
-					getSkItem(slot, costs[slot], "四技能", "§7火焰法师：未开放", "§7寒冰法师：未开放", "§7水系法师：未开放"));
+					getSkItem(slot, costs[slot], "三技能", "§7火焰法师：未开放", "§7寒冰法师：未开放", "§7水系法师：未开放"));
 		for (int slot = 0; slot < 9; slot++)
 			modelSkillInventory.setItem(slot + 36,
 					getSkItem(slot, costs[slot], "终极技能", "§7火焰法师：未开放", "§7寒冰法师：未开放", "§7水系法师：未开放"));

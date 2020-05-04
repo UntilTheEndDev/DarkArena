@@ -20,5 +20,8 @@ public class LastTimeCounter extends BukkitRunnable {
 				WarlordManager.stopArena(arenaId);
 				cancel();
 			}
+		if(!WarlordManager.arenas.get(arenaId).isRunning) {
+			cancel();
+		}
 	}
 }

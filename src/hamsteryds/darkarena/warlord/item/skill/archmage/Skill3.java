@@ -10,6 +10,6 @@ public class Skill3{
 	public Skill3(Player player,String arenaId) {
 		this.player=player;
 		this.arenaId=arenaId;
-		player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,99999,3));
+		player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,400,3));
 	}
 }

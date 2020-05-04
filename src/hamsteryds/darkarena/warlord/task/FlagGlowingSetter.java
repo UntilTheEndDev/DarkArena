@@ -27,11 +27,14 @@ public class FlagGlowingSetter extends BukkitRunnable{
 		}
 		for (UUID uuid : WarlordManager.players.get(arenaId).keySet()) {
 			WarlordPlayer pl = WarlordManager.players.get(arenaId).get(uuid);
+			Player player = Bukkit.getPlayer(uuid);
 			if(pl.isCarryingFlag) {
-				Player player = Bukkit.getPlayer(uuid);
 				player.setGlowing(true);
-				player.getWorld().spawnParticle(Particle.LAVA,player.getLocation().add(2,2,2),5);
+				player.getWorld().spawnParticle(Particle.REDSTONE,player.getLocation().add(2,2,2),5);
+			}else {
+				player.setGlowing(false);
 			}
 		}
+		
 	}
 }

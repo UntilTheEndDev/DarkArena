@@ -30,10 +30,11 @@ public class WarlordManager {
 	public static HashMap<String, List<WarlordTeam>> teams = new HashMap<String, List<WarlordTeam>>();
 	public static File arenaFile = new File(DarkArena.instance.getDataFolder(), "warlord.yml");
 	public static YamlConfiguration arenaLoader = YamlConfiguration.loadConfiguration(arenaFile);
-	public static Location hubLocation = loadLocation("hub"); 
+	public static Location  hubLocation;
 
 	public static void loadConfigWarlordArenas() {
 		DarkArena.instance.saveResource("warlord.yml", false);
+		hubLocation = loadLocation("hub");
 		for (String path : arenaLoader.getKeys(true)) {
 			if (path.startsWith("arenas.")) {
 				String tmp = path.replace("arenas.", "");

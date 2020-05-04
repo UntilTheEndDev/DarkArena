@@ -28,6 +28,21 @@ public class SkillEffecter implements Listener {
 		skills.put("火球术", new NormalSkill("NormalAttack", 30, 0));
 		skills.put("炼狱", new NormalSkill("BlazeSkill4", 40, 60));
 		Bukkit.getServer().getPluginManager().registerEvents(this, DarkArena.instance);
+		new BukkitRunnable() {
+
+			@Override
+			public void run() {
+				if (!WarlordManager.arenas.get(arenaId).isRunning) {
+					cancel();
+					unregister();
+				}
+			}
+			
+		}.runTaskTimer(DarkArena.instance,0L,10L);
+	}
+	
+	public void unregister() {
+		unregister();
 	}
 
 	@EventHandler

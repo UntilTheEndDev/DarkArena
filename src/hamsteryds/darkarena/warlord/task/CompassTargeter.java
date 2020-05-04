@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -38,6 +39,10 @@ public class CompassTargeter extends BukkitRunnable implements Listener {
 				player.setCompassTarget(Bukkit.getPlayer(team.whoIsCarrying).getLocation());
 			else
 				player.setCompassTarget(team.currentFlagLocation);
+		}
+		if(!WarlordManager.arenas.get(arenaId).isRunning) {
+			cancel();
+			HandlerList.unregisterAll(this);
 		}
 	}
 
