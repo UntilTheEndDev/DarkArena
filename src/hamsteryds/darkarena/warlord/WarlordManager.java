@@ -13,7 +13,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import hamsteryds.darkarena.DarkArena;
-import hamsteryds.darkarena.warlord.item.SkillEffecter;
+import hamsteryds.darkarena.warlord.item.skill.archmage.SkillEffecter;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.task.CompassTargeter;
 import hamsteryds.darkarena.warlord.task.FlagGlowingSetter;
@@ -30,6 +30,7 @@ public class WarlordManager {
 	public static HashMap<String, List<WarlordTeam>> teams = new HashMap<String, List<WarlordTeam>>();
 	public static File arenaFile = new File(DarkArena.instance.getDataFolder(), "warlord.yml");
 	public static YamlConfiguration arenaLoader = YamlConfiguration.loadConfiguration(arenaFile);
+	public static Location hubLocation = loadLocation("hub"); 
 
 	public static void loadConfigWarlordArenas() {
 		DarkArena.instance.saveResource("warlord.yml", false);
@@ -127,6 +128,7 @@ public class WarlordManager {
 				losers.add(uuid);
 
 			StatsManager.playerDatas.get(uuid).archmage.addFigure(pl.kill, 1, 0, pl.totalATK, 0);
+			Bukkit.getPlayer(uuid).teleport(hubLocation);
 		}
 		if (ATKMVP != null) {
 			StatsManager.playerDatas.get(ATKMVP).totalATKMVP++;

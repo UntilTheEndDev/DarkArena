@@ -1,4 +1,4 @@
-package hamsteryds.darkarena.warlord.item;
+package hamsteryds.darkarena.warlord.item.skill.archmage;
 
 import java.util.HashMap;
 
@@ -13,8 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.WarlordManager;
+import hamsteryds.darkarena.warlord.item.ItemFactory;
 import hamsteryds.darkarena.warlord.item.skill.NormalSkill;
-import hamsteryds.darkarena.warlord.item.skill.archmage.Skill2;
 import hamsteryds.darkarena.warlord.item.skill.archmage.blaze.NormalAttack;
 
 public class SkillEffecter implements Listener {
@@ -26,6 +26,7 @@ public class SkillEffecter implements Listener {
 		skills.put("时空断裂", new NormalSkill("Skill2", 50, 40));
 		skills.put("奥术护盾", new NormalSkill("Skill3", 50, 30));
 		skills.put("火球术", new NormalSkill("NormalAttack", 30, 0));
+		skills.put("炼狱", new NormalSkill("BlazeSkill4", 40, 60));
 		Bukkit.getServer().getPluginManager().registerEvents(this, DarkArena.instance);
 	}
 
@@ -58,6 +59,9 @@ public class SkillEffecter implements Listener {
 		switch (skill.name) {
 		case "Skill2":
 			new Skill2(player, this.arenaId);
+			break;
+		case "Skill3":
+			new Skill3(player, this.arenaId);
 			break;
 		case "NormalAttack":
 			new NormalAttack(player, this.arenaId);
