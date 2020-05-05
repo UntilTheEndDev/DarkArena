@@ -12,6 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.item.KitManager;
 import hamsteryds.darkarena.warlord.item.skill.archmage.SkillEffecter;
@@ -87,9 +89,24 @@ public class WarlordManager {
 				playerMap.remove(uuid);
 			else {
 				player.getInventory().clear();
-				for (int slot : KitManager.archmageKits.get(StatsManager.playerDatas.get(uuid).archmage.trainer).keySet())
-					player.getInventory().setItem(slot,
-							KitManager.archmageKits.get(StatsManager.playerDatas.get(uuid).archmage.trainer).get(slot));
+				HashMap<Integer, ItemStack> kit = new HashMap<Integer, ItemStack>();
+				switch (StatsManager.playerDatas.get(uuid).archmage.trainer) {
+				case BLAZE:
+					kit = KitManager.blazeKits;
+					break;
+				case ICE:
+					kit = KitManager.blazeKits;
+					break;
+				case WATER:
+					kit = KitManager.blazeKits;
+					break;
+				case NULL:
+					kit = KitManager.blazeKits;
+					break;
+				}
+				for (int slot : kit.keySet()) {
+					player.getInventory().setItem(slot, kit.get(slot));
+				}
 				player.updateInventory();
 				player.teleport(playerMap.get(uuid).team.spawnLocation);
 				player.sendMessage("§6[战争领主]§r比赛开始");
@@ -107,6 +124,8 @@ public class WarlordManager {
 	}
 
 	public static void stopArena(String arenaId) {
+		arenas.get(arenaId).isRunning=false;
+		arenas.get(arenaId).isWaiting=true;
 		List<WarlordTeam> currentTeams = teams.get(arenaId);
 		HashMap<UUID, WarlordPlayer> currentPlayers = players.get(arenaId);
 		List<UUID> winners = new ArrayList<UUID>();

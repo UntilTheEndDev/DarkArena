@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -218,6 +219,12 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onInventoryEvent(InventoryClickEvent event) {
 		if (WarlordManager.players.get(this.arenaId).containsKey(event.getWhoClicked().getUniqueId()))
+			event.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onThrow(PlayerDropItemEvent event) {
+		if (WarlordManager.players.get(this.arenaId).containsKey(event.getPlayer().getUniqueId()))
 			event.setCancelled(true);
 	}
 

@@ -24,8 +24,9 @@ public class MagickaImprover extends BukkitRunnable{
 		}
 		for (UUID uuid : WarlordManager.players.get(arenaId).keySet()) {
 			WarlordPlayer pl = WarlordManager.players.get(arenaId).get(uuid);
-			if(pl.magicka+10<=pl.maxMagicka)
-				pl.magicka+=10;
+			if(pl.magicka+5<=pl.maxMagicka)
+				pl.magicka+=5;
+			else pl.magicka=pl.maxMagicka;
 		}
 	}
 }

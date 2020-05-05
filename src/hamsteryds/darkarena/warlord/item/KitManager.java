@@ -14,14 +14,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import hamsteryds.darkarena.DarkArena;
-import hamsteryds.darkarena.warlord.stat.ArchmageManager.ArchmageType;
 
 public class KitManager implements Listener {
-	public static HashMap<ArchmageType, HashMap<Integer, ItemStack>> archmageKits = new HashMap<ArchmageType, HashMap<Integer, ItemStack>>();
 	public static HashMap<Integer, ItemStack> hubKits = new HashMap<Integer, ItemStack>();
+	public static HashMap<Integer, ItemStack> blazeKits = new HashMap<Integer, ItemStack>();
 	public static HashMap<ItemStack, String> cmds = new HashMap<ItemStack, String>();
 
 	public static void initAll() {
+		DarkArena.instance.saveResource("kit.yml", false);
 		File file = new File(DarkArena.instance.getDataFolder(), "kit.yml");
 		YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
 		for (String path : yaml.getKeys(true)) {
@@ -39,9 +39,7 @@ public class KitManager implements Listener {
 				if (yaml.contains(path + ".cmd"))
 					cmds.put(item, yaml.getString(path + ".cmd"));
 			}
-
 			if (path.startsWith("BLAZE.")) {
-				archmageKits.put(ArchmageType.BLAZE, new HashMap<Integer, ItemStack>());
 				String slot = path.replace("BLAZE.", "");
 				if (slot.contains("."))
 					continue;
@@ -51,7 +49,7 @@ public class KitManager implements Listener {
 				if (yaml.contains(path + ".lore"))
 					meta.setLore(yaml.getStringList(path + ".lore"));
 				item.setItemMeta(meta);
-				archmageKits.get(ArchmageType.BLAZE).put(Integer.valueOf(slot), item);
+				blazeKits.put(Integer.valueOf(slot), item);
 				if (yaml.contains(path + ".cmd"))
 					cmds.put(item, yaml.getString(path + ".cmd"));
 			}
@@ -68,7 +66,7 @@ public class KitManager implements Listener {
 				if (player.isOp())
 					isOp = true;
 				player.setOp(true);
-				event.getPlayer().performCommand(cmds.get(event.getItem()));
+				player.performCommand(cmds.get(event.getItem()).replace("{player}", player.getName()));
 				if (!isOp)
 					player.setOp(false);
 			}

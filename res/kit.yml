@@ -21,7 +21,7 @@ hub:
     cmd: "hub"
 BLAZE:
   0:
-    material: WOODEN_SWORD
+    material: WOOD_HOE
     name: "§a近战武器"
   1:
     material: BLAZE_ROD

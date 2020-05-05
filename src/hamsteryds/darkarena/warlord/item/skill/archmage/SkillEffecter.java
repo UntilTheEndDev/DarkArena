@@ -26,11 +26,11 @@ public class SkillEffecter implements Listener {
 
 	public SkillEffecter(String arenaId) {
 		this.arenaId = arenaId;
-		skills.put("火球术", new NormalSkill("BlazeNormalAttack", 30, 0));
-		skills.put("火焰喷发", new NormalSkill("BlazeSkill1", 80, 20));
-		skills.put("时空断裂", new NormalSkill("Skill2", 50, 40));
-		skills.put("奥术护盾", new NormalSkill("Skill3", 50, 30));
-		skills.put("炼狱", new NormalSkill("BlazeSkill4", 0, 60));
+		skills.put("§a火球术", new NormalSkill("BlazeNormalAttack", 30, 0));
+		skills.put("§a火焰喷发", new NormalSkill("BlazeSkill1", 80, 20));
+		skills.put("§a时空断裂", new NormalSkill("Skill2", 50, 40));
+		skills.put("§a奥术护盾", new NormalSkill("Skill3", 50, 30));
+		skills.put("§a炼狱", new NormalSkill("BlazeSkill4", 0, 60));
 		Bukkit.getServer().getPluginManager().registerEvents(this, DarkArena.instance);
 		new BukkitRunnable() {
 
@@ -100,7 +100,7 @@ public class SkillEffecter implements Listener {
 		return "";
 	}
 
-	private static void setCooldown(PlayerInventory inv, int slot, int cd) {
+	private void setCooldown(PlayerInventory inv, int slot, int cd) {
 		if (cd == 0)
 			return;
 		ItemStack item = inv.getItem(slot);
@@ -113,6 +113,9 @@ public class SkillEffecter implements Listener {
 				item.setType(Material.SULPHUR);
 				item.setAmount(cd - counter + 1);
 				inv.setItem(slot, item);
+				if(!WarlordManager.arenas.get(arenaId).isRunning) {
+					inv.setItem(slot, new ItemStack(Material.AIR));
+				}
 				if (counter >= cd) {
 
 					item.setType(material);
