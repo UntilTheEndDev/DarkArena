@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.warlord.PAPIExpansion;
+import hamsteryds.darkarena.warlord.WarlordLoader;
 import hamsteryds.darkarena.warlord.WarlordManager;
 import hamsteryds.darkarena.warlord.item.KitsManager;
 import hamsteryds.darkarena.warlord.listener.PlayerListener;
@@ -34,7 +35,7 @@ public class DarkArena extends JavaPlugin {
 		
 		getCommand("warlord").setExecutor(this);
 		
-		WarlordManager.loadConfigWarlordArenas();
+		WarlordLoader.loadConfigWarlordArenas();;
 		
 		this.getServer().getPluginManager().registerEvents(new StatsManager(),this);
 		
