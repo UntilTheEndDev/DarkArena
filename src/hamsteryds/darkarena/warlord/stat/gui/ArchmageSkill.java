@@ -25,7 +25,7 @@ public class ArchmageSkill {
 	public static HashMap<Integer, HashMap<String, Double>> sk1Figures = new HashMap<Integer, HashMap<String, Double>>();
 
 	public static void initSkFigures() {
-		File file = new File(DarkArena.instance.getDataFolder(), "archmage.yml");
+		File file = new File(DarkArena.instance.getDataFolder(), "archmagelevel.yml");
 		YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
 		for (String level : yaml.getKeys(false)) {
 			HashMap<String, Double> figure = new HashMap<String, Double>();

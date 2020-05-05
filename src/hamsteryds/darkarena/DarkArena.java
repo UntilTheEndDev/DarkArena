@@ -14,12 +14,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.warlord.PAPIExpansion;
 import hamsteryds.darkarena.warlord.WarlordManager;
+import hamsteryds.darkarena.warlord.item.KitManager;
 import hamsteryds.darkarena.warlord.listener.PlayerListener;
 import hamsteryds.darkarena.warlord.stat.ArchmageManager;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.stat.container.Archmage.ChangeType;
 import hamsteryds.darkarena.warlord.stat.container.Archmage.VariableType;
+import hamsteryds.darkarena.warlord.stat.gui.ArchmageChoose;
 import hamsteryds.darkarena.warlord.stat.gui.ArchmageInfo;
+import hamsteryds.darkarena.warlord.stat.gui.ArchmageSkill;
 import hamsteryds.darkarena.warlord.util.WarlordTeam.TeamType;
 
 public class DarkArena extends JavaPlugin {
@@ -38,6 +41,8 @@ public class DarkArena extends JavaPlugin {
 		new PAPIExpansion().register();
 		
 		ArchmageManager.initAll();
+		
+		KitManager.initAll();
 		
 		checkUpdate();
 	}
@@ -86,6 +91,14 @@ public class DarkArena extends JavaPlugin {
 				if(contents[0].equals("archmage")) {
 					StatsManager.Player$1 pl=StatsManager.playerDatas.get(player.getUniqueId());
 					player.openInventory(ArchmageInfo.getInfoInventory(player));
+				}
+				if(contents[0].equals("archmagelevel")) {
+					StatsManager.Player$1 pl=StatsManager.playerDatas.get(player.getUniqueId());
+					player.openInventory(ArchmageSkill.getSkillInventory(player));
+				}
+				if(contents[0].equals("archmagechoose")) {
+					StatsManager.Player$1 pl=StatsManager.playerDatas.get(player.getUniqueId());
+					player.openInventory(ArchmageChoose.getChooseInventory(player));
 				}
 				if(contents[0].equals("money")) {
 					Player changee=Bukkit.getPlayer(contents[2]);

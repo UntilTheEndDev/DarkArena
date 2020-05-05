@@ -17,11 +17,11 @@ import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.stat.gui.ArchmageSkill;
 
-public class NormalAttack {
+public class BlazeNormalAttack {
 	private String arenaId;
 	private Player player;
 
-	public NormalAttack(Player player, String arenaId) {
+	public BlazeNormalAttack(Player player, String arenaId) {
 		this.player = player;
 		this.arenaId = arenaId;
 		Location loc = player.getLocation().add(0, 1.25, 0);
@@ -33,6 +33,11 @@ public class NormalAttack {
 
 			@Override
 			public void run() {
+				counter++;
+				if (counter >= 500) {
+					cancel();
+					return;
+				}
 				loc.add(vec);
 				loc.getWorld().spawnParticle(Particle.LAVA, loc, 1);
 				Collection<Entity> entities = loc.getWorld().getNearbyEntities(loc, 0.2, 0.2, 0.2);
@@ -44,8 +49,8 @@ public class NormalAttack {
 							Player damagee = (Player) entity;
 							double damage = 0.0;
 							damage += 4 * (1 + add) + Math.random() - Math.random();
-							damage -= counter / 500.0;
-							damagee.damage(damage);
+							damage -= counter / 250.0;
+							damagee.damage(damage>0?damage:0);
 							callEvent(damagee, damage);
 							damagee.sendMessage("§6[战争领主]§r您被" + player.getName() + "释放的火球术攻击，血量减少了"
 									+ String.format("%.2f", damage * 200));
@@ -56,7 +61,7 @@ public class NormalAttack {
 										continue;
 									Player damagee2 = (Player) passenger;
 									damage *= 1 - (damagee2.getLocation().distance(damagee.getLocation()) / 3);
-									damagee2.damage(damage);
+									damagee2.damage(damage>0?damage:0);
 									callEvent(damagee2, damage);
 									damagee2.sendMessage("§6[战争领主]§r您被" + player.getName() + "释放的火球术攻击，血量减少了"
 											+ String.format("%.2f", damage * 200));
@@ -69,7 +74,7 @@ public class NormalAttack {
 					}
 				}
 				if (loc.getBlock().getType() != Material.AIR) {
-					for (Entity entity : loc.getWorld().getNearbyEntities(loc, 5, 5, 5)) {
+					for (Entity entity : loc.getWorld().getNearbyEntities(loc, 3, 3, 3)) {
 						if (entity instanceof Player) {
 							if (entity.getEntityId() == player.getEntityId())
 								continue;
@@ -77,17 +82,14 @@ public class NormalAttack {
 							double damage = 0;
 							damage += 4 * (1 + add) + Math.random() - Math.random();
 							damage *= 1 - (damagee.getLocation().distance(loc) / 5);
-							damagee.damage(damage);
+							damage -= counter / 250.0;
+							damagee.damage(damage>0?damage:0);
 							callEvent(damagee, damage);
 							damagee.sendMessage("§6[战争领主]§r您被" + player.getName() + "释放的火球术攻击，血量减少了"
 									+ String.format("%.2f", damage * 200));
 						}
 					}
 					loc.getWorld().spawnParticle(Particle.FLAME, loc, 3);
-					cancel();
-					return;
-				}
-				if (counter++ >= 1000) {
 					cancel();
 					return;
 				}

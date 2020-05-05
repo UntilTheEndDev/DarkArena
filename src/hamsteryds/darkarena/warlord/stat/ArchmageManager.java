@@ -111,7 +111,7 @@ public class ArchmageManager {
 	}
 
 	public static void initAll() {
-		DarkArena.instance.saveResource("archmage.yml", false);
+		DarkArena.instance.saveResource("archmagelevel.yml", false);
 		ArchmageInfo.initModelInfoInventory();
 		ArchmageSkill.initModelSkillInventory();
 		ArchmageChoose.initModelChooseInventory();

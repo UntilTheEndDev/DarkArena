@@ -1,0 +1,65 @@
+hub:
+  0: 
+    material: SKULL_ITEM
+    name: "§a我的信息"
+    cmd: "warlord archmage"
+  1: 
+    material: EMERALD
+    name: "§a战争领主-技能等级商店"
+    cmd: "warlord archmagelevel"
+  2: 
+    material: DIAMOND
+    name: "§a战争领主-属性等级商店"
+    cmd: "tell {player} 暂未开放"
+  3: 
+    material: PAINTING
+    name: "§a战争领主-选择职业"
+    cmd: "warlord archmagechoose"
+  8: 
+    material: NETHER_STAR
+    name: "§a回到大厅"
+    cmd: "hub"
+BLAZE:
+  0:
+    material: WOODEN_SWORD
+    name: "§a近战武器"
+  1:
+    material: BLAZE_ROD
+    name: "§a火球术"
+    lore:
+    - "§7发出魔法，伤害击中区域小范围内敌人"
+    - "§a"
+    - "§7冷却：§a0秒"
+    - "§7消耗魔法值：§a30点"
+  2:
+    material: BLAZE_POWDER
+    name: "§a火焰喷发"
+    lore:
+    - "§7发出伤害极高的火焰束"
+    - "§a"
+    - "§7冷却：§a20秒"
+    - "§7消耗魔法值：§a80点"
+  3:
+    material: ENDER_PEARL
+    name: "§a时空断裂"
+    lore:
+    - "§7释放5秒后闪现回到释放时原位并回复大量血量"
+    - "§a"
+    - "§7冷却：§a40秒"
+    - "§7消耗魔法值：§a50点"
+  4:
+    material: PRISMARINE_CRYSTALS
+    name: "§a奥术护盾"
+    lore:
+    - "§7右击为自己增加带有大量防御值的护盾"
+    - "§a"
+    - "§7冷却：§a30秒"
+    - "§7消耗魔法值：§a50点"
+  5:
+    material: BLAZE_ROD
+    name: "§a炼狱"
+    lore:
+    - "§7使用后15秒内伤害带有巨量加成"
+    - "§a"
+    - "§7冷却：§a60秒"
+    - "§7消耗魔法值：§a0点"

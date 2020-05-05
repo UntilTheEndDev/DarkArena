@@ -25,7 +25,7 @@ public class BlazeSkill4 implements Listener {
 			public void run() {
 				unregister();
 			}
-		}.runTaskLater(DarkArena.instance, 400L);
+		}.runTaskLater(DarkArena.instance, 300L);
 	}
 
 	public void unregister() {

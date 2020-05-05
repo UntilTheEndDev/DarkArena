@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import hamsteryds.darkarena.DarkArena;
+import hamsteryds.darkarena.warlord.item.KitManager;
 import hamsteryds.darkarena.warlord.stat.container.Archmage;
 
 public class StatsManager implements Listener {
@@ -120,7 +121,12 @@ public class StatsManager implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		loadData(event.getPlayer());
+		Player player=event.getPlayer();
+		loadData(player);
+		player.getInventory().clear();
+		for (int slot : KitManager.hubKits.keySet())
+			player.getInventory().setItem(slot, KitManager.hubKits.get(slot));
+		player.updateInventory();
 	}
 
 	@EventHandler
