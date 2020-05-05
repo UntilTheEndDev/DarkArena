@@ -15,14 +15,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import hamsteryds.darkarena.DarkArena;
 
-public class KitManager implements Listener {
+public class KitsManager implements Listener {
 	public static HashMap<Integer, ItemStack> hubKits = new HashMap<Integer, ItemStack>();
 	public static HashMap<Integer, ItemStack> blazeKits = new HashMap<Integer, ItemStack>();
 	public static HashMap<ItemStack, String> cmds = new HashMap<ItemStack, String>();
 
 	public static void initAll() {
-		DarkArena.instance.saveResource("kit.yml", false);
-		File file = new File(DarkArena.instance.getDataFolder(), "kit.yml");
+		DarkArena.instance.saveResource("kits.yml", false);
+		File file = new File(DarkArena.instance.getDataFolder(), "kits.yml");
 		YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
 		for (String path : yaml.getKeys(true)) {
 			if (path.startsWith("hub.")) {
@@ -54,7 +54,7 @@ public class KitManager implements Listener {
 					cmds.put(item, yaml.getString(path + ".cmd"));
 			}
 		}
-		Bukkit.getPluginManager().registerEvents(new KitManager(), DarkArena.instance);
+		Bukkit.getPluginManager().registerEvents(new KitsManager(), DarkArena.instance);
 	}
 
 	@EventHandler

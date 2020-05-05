@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.warlord.PAPIExpansion;
 import hamsteryds.darkarena.warlord.WarlordManager;
-import hamsteryds.darkarena.warlord.item.KitManager;
+import hamsteryds.darkarena.warlord.item.KitsManager;
 import hamsteryds.darkarena.warlord.listener.PlayerListener;
 import hamsteryds.darkarena.warlord.stat.ArchmageManager;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
@@ -42,7 +42,7 @@ public class DarkArena extends JavaPlugin {
 		
 		ArchmageManager.initAll();
 		
-		KitManager.initAll();
+		KitsManager.initAll();
 		
 		checkUpdate();
 	}

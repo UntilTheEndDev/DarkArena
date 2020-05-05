@@ -10,7 +10,6 @@ hub:
   2: 
     material: DIAMOND
     name: "§a战争领主-属性等级商店"
-    cmd: "tell {player} 暂未开放"
   3: 
     material: PAINTING
     name: "§a战争领主-选择职业"
@@ -56,10 +55,15 @@ BLAZE:
     - "§7冷却：§a30秒"
     - "§7消耗魔法值：§a50点"
   5:
-    material: BLAZE_ROD
+    material: FLINT_AND_STEEL
     name: "§a炼狱"
     lore:
     - "§7使用后15秒内伤害带有巨量加成"
     - "§a"
     - "§7冷却：§a60秒"
     - "§7消耗魔法值：§a0点"
+  8:
+    material: COMPASS
+    name: "§a示踪器"
+    lore:
+    - "§7切换指向本队/敌对的旗帜坐标"

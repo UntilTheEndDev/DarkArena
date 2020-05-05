@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import hamsteryds.darkarena.DarkArena;
-import hamsteryds.darkarena.warlord.item.KitManager;
+import hamsteryds.darkarena.warlord.item.KitsManager;
 import hamsteryds.darkarena.warlord.item.skill.archmage.SkillEffecter;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.task.CompassTargeter;
@@ -92,16 +92,16 @@ public class WarlordManager {
 				HashMap<Integer, ItemStack> kit = new HashMap<Integer, ItemStack>();
 				switch (StatsManager.playerDatas.get(uuid).archmage.trainer) {
 				case BLAZE:
-					kit = KitManager.blazeKits;
+					kit = KitsManager.blazeKits;
 					break;
 				case ICE:
-					kit = KitManager.blazeKits;
+					kit = KitsManager.blazeKits;
 					break;
 				case WATER:
-					kit = KitManager.blazeKits;
+					kit = KitsManager.blazeKits;
 					break;
 				case NULL:
-					kit = KitManager.blazeKits;
+					kit = KitsManager.blazeKits;
 					break;
 				}
 				for (int slot : kit.keySet()) {
@@ -157,8 +157,8 @@ public class WarlordManager {
 			Player player = Bukkit.getPlayer(uuid);
 			player.teleport(hubLocation);
 			player.getInventory().clear();
-			for (int slot : KitManager.hubKits.keySet())
-				player.getInventory().setItem(slot, KitManager.hubKits.get(slot));
+			for (int slot : KitsManager.hubKits.keySet())
+				player.getInventory().setItem(slot, KitsManager.hubKits.get(slot));
 			player.updateInventory();
 		}
 		if (ATKMVP != null) {
