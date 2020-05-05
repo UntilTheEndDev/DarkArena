@@ -22,26 +22,25 @@ public class CompassTargeter extends BukkitRunnable implements Listener {
 
 	public CompassTargeter(String arenaId) {
 		this.arenaId = arenaId;
-		for (UUID uuid : WarlordManager.players.get(arenaId).keySet()) 
+		for (UUID uuid : WarlordManager.players.get(arenaId).keySet())
 			pointTeamFlag.add(uuid);
-		this.runTaskTimer(DarkArena.instance,0L,20L);
-		Bukkit.getServer().getPluginManager().registerEvents(this,DarkArena.instance);
+		this.runTaskTimer(DarkArena.instance, 0L, 20L);
+		Bukkit.getServer().getPluginManager().registerEvents(this, DarkArena.instance);
 	}
 
 	@Override
 	public void run() {
-		for(UUID uuid:WarlordManager.players.get(arenaId).keySet()) {
-			Player player=Bukkit.getPlayer(uuid);
-			WarlordTeam team=this.pointTeamFlag.contains(uuid)
-					?WarlordManager.players.get(arenaId).get(uuid).team
-					:WarlordManager.players.get(arenaId).get(uuid).enemy;
-			if(team.whoIsCarrying!=null)
-				player.setCompassTarget(Bukkit.getPlayer(team.whoIsCarrying).getLocation()); 
+		for (UUID uuid : WarlordManager.players.get(arenaId).keySet()) {
+			Player player = Bukkit.getPlayer(uuid);
+			WarlordTeam team = this.pointTeamFlag.contains(uuid) ? WarlordManager.players.get(arenaId).get(uuid).team
+					: WarlordManager.players.get(arenaId).get(uuid).enemy;
+			if (team.whoIsCarrying != null)
+				player.setCompassTarget(Bukkit.getPlayer(team.whoIsCarrying).getLocation());
 			else
-				player.setCompassTarget(team.currentFlagLocation); 
+				player.setCompassTarget(team.currentFlagLocation);
 		}
 	}
-	
+
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 		if (!WarlordManager.arenas.get(this.arenaId).isRunning)
@@ -49,11 +48,13 @@ public class CompassTargeter extends BukkitRunnable implements Listener {
 		if (!event.hasItem())
 			return;
 		ItemStack item = event.getItem();
-		if (item.getType()==Material.COMPASS){
-			Player player=event.getPlayer();
-			if(this.pointTeamFlag.contains(player.getUniqueId()))
+		if (item.getType() == Material.COMPASS
+				&& WarlordManager.players.get(this.arenaId).containsKey(event.getPlayer().getUniqueId())) {
+			Player player = event.getPlayer();
+			if (this.pointTeamFlag.contains(player.getUniqueId()))
 				this.pointTeamFlag.remove(player.getUniqueId());
-			else this.pointTeamFlag.add(player.getUniqueId());
+			else
+				this.pointTeamFlag.add(player.getUniqueId());
 			player.sendMessage("§6[战争领主]§r已经切换指南针模式");
 		}
 	}

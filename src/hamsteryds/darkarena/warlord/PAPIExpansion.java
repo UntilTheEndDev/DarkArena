@@ -49,6 +49,14 @@ public class PAPIExpansion extends PlaceholderExpansion {
 			return String.valueOf(data.totalATKMVP);
 		} else if (identifier.equalsIgnoreCase("生涯治疗MVP数")) {
 			return String.valueOf(data.totalCureMVP);
+		} else if (identifier.equalsIgnoreCase("{money}")) {
+			return String.valueOf(ps.money); 
+		} else if (identifier.equalsIgnoreCase("{archmage_level}")) {
+			return String.valueOf(ps.archmage.getTotalLevel()); 
+		} else if (identifier.equalsIgnoreCase("{archmage_trainer}")) {
+			return String.valueOf(ps.archmage.trainer.name); 
+		} else if (identifier.equalsIgnoreCase("{archmage_mastery}")) {
+			return String.valueOf(ps.archmage.mastery.name); 
 		} else if (identifier.equalsIgnoreCase("{blaze_kill}")) {
 			return String.valueOf(ps.archmage.blazeStats.get(0)); 
 		} else if (identifier.equalsIgnoreCase("{blaze_arena}")) {

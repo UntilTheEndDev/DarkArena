@@ -3,9 +3,12 @@ package hamsteryds.darkarena.warlord.stat;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,6 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -23,95 +28,8 @@ import hamsteryds.darkarena.DarkArena;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class ArchmageManager {
-	public int sk1Level;
-	public int sk2Level;
-	public int sk3Level;
-	public int sk4Level;
-	public int sk5Level;
-	public int attrib1Level;
-	public int attrib2Level;
-	public int attrib3Level;
-	public int attrib4Level;
-	public int attrib5Level;
-	public List<Integer> blazeStats;
-	public List<Integer> iceStats;
-	public List<Integer> waterStats;
-	public ArchmageType trainer = ArchmageType.BLAZE;
-	public ArchmageType mastery = ArchmageType.NULL;
-
-	public ArchmageManager(int sk1Level, int sk2Level, int sk3Level, int sk4Level, int sk5Level, int attrib1Level,
-			int attrib2Level, int attrib3Level, int attrib4Level, int attrib5Level, String trainer, String mastery,
-			List<Integer> blazeStats, List<Integer> iceStats,List<Integer> waterStats) {
-		this.sk1Level = sk1Level;
-		this.sk2Level = sk2Level;
-		this.sk3Level = sk3Level;
-		this.sk4Level = sk4Level;
-		this.sk5Level = sk5Level;
-		this.attrib1Level = attrib1Level;
-		this.attrib2Level = attrib2Level;
-		this.attrib3Level = attrib3Level;
-		this.attrib4Level = attrib4Level;
-		this.attrib5Level = attrib5Level;
-		this.trainer = ArchmageType.valueOf(trainer);
-		this.mastery = ArchmageType.valueOf(mastery);
-		this.blazeStats = blazeStats;
-		this.iceStats = iceStats;
-		this.waterStats = waterStats;
-	}
-
-	public ArchmageManager() {
-		this.sk1Level = 0;
-		this.sk2Level = 0;
-		this.sk3Level = 0;
-		this.sk4Level = 0;
-		this.sk5Level = 0;
-		this.attrib1Level = 0;
-		this.attrib2Level = 0;
-		this.attrib3Level = 0;
-		this.attrib4Level = 0;
-		this.attrib5Level = 0;
-		this.trainer = ArchmageType.BLAZE;
-		this.mastery = ArchmageType.NULL;
-		this.blazeStats = new ArrayList<Integer>();
-		this.iceStats = new ArrayList<Integer>();
-		this.waterStats = new ArrayList<Integer>();
-	}
-	
-	public void addFigure(int kill,int arena,int victory,int atk,int mvp) {
-		switch(this.trainer) {
-		case BLAZE: 
-			this.blazeStats.set(0, blazeStats.get(0)+kill);
-			this.blazeStats.set(1, blazeStats.get(1)+arena);
-			this.blazeStats.set(2, blazeStats.get(2)+victory);
-			this.blazeStats.set(3, blazeStats.get(3)+atk);
-			this.blazeStats.set(4, blazeStats.get(4)+mvp);
-			break;
-		case ICE:
-			this.iceStats.set(0, iceStats.get(0)+kill);
-			this.iceStats.set(1, iceStats.get(1)+arena);
-			this.iceStats.set(2, iceStats.get(2)+victory);
-			this.iceStats.set(3, iceStats.get(3)+atk);
-			this.iceStats.set(4, iceStats.get(4)+mvp);
-			break;
-		case WATER:
-			this.waterStats.set(0, waterStats.get(0)+kill);
-			this.waterStats.set(1, waterStats.get(1)+arena);
-			this.waterStats.set(2, waterStats.get(2)+victory);
-			this.waterStats.set(3, waterStats.get(3)+atk);
-			this.waterStats.set(4, waterStats.get(4)+mvp);
-			break;
-		case NULL: 
-			break;
-		}
-	}
-
-	public int getTotalLevel() {
-		return sk1Level + sk2Level + sk3Level + sk4Level + sk5Level + attrib1Level + attrib2Level + attrib3Level
-				+ attrib4Level + attrib5Level;
-	}
-
-	static class InvHolder implements InventoryHolder {
-		public static final InvHolder INSTANCE = new InvHolder();
+	static class SkillInvHolder implements InventoryHolder {
+		public static final SkillInvHolder INSTANCE = new SkillInvHolder();
 
 		@Override
 		public Inventory getInventory() {
@@ -120,19 +38,52 @@ public class ArchmageManager {
 		}
 	}
 
-	public static class ClickListener implements Listener {
+	static class InfoInvHolder implements InventoryHolder {
+		public static final InfoInvHolder INSTANCE = new InfoInvHolder();
+
+		@Override
+		public Inventory getInventory() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	}
+
+	public static class InventoryListener implements Listener {
+		private Set<UUID> openers = new HashSet<UUID>();
+
+		@EventHandler
+		public void onOpen(InventoryOpenEvent event) {
+			if (event.getInventory().getHolder() instanceof SkillInvHolder
+					|| event.getInventory().getHolder() instanceof InfoInvHolder)
+				openers.add(event.getPlayer().getUniqueId());
+		}
+
+		@EventHandler
+		public void onClose(InventoryCloseEvent event) {
+			if (event.getInventory().getHolder() instanceof SkillInvHolder
+					|| event.getInventory().getHolder() instanceof InfoInvHolder)
+				openers.remove(event.getPlayer().getUniqueId());
+		}
+
+		@EventHandler
+		public void onInteract(InventoryClickEvent event) {
+			if (openers.contains(event.getWhoClicked().getUniqueId()))
+				event.setCancelled(true);
+		}
+
 		@EventHandler
 		public void onClick(InventoryClickEvent event) {
 			if (event.getClickedInventory() == null)
 				return;
-			if (event.getClickedInventory().getHolder() instanceof InvHolder) {
+			if (event.getClickedInventory().getHolder() instanceof SkillInvHolder) {
 				event.setCancelled(true);
 				ItemStack item = event.getCurrentItem();
+				int slot = event.getSlot();
+				Player player = (Player) event.getWhoClicked();
+				StatsManager.Player$1 pl = StatsManager.playerDatas.get(player.getUniqueId());
 				if (item.getDurability() == 13) {
 					List<String> lore = item.getItemMeta().getLore();
-					int slot = event.getSlot();
 					int needMoney = Integer.valueOf(lore.get(8).replace("§7花费：§6", ""));
-					StatsManager.Player$1 pl = StatsManager.playerDatas.get(event.getWhoClicked().getUniqueId());
 					pl.money -= needMoney;
 					if (slot < 9)
 						pl.archmage.sk1Level++;
@@ -144,48 +95,67 @@ public class ArchmageManager {
 						pl.archmage.sk4Level++;
 					if (36 <= slot && slot < 45)
 						pl.archmage.sk5Level++;
-					event.getWhoClicked().openInventory(pl.archmage.getSkillInventory(pl));
+					player.openInventory(getSkillInventory(player));
+				}
+				if (slot == 48)
+					player.openInventory(getInfoInventory(player));
+			}
+			if (event.getClickedInventory().getHolder() instanceof InfoInvHolder) {
+				event.setCancelled(true);
+				Player player = (Player) event.getWhoClicked();
+				StatsManager.Player$1 pl = StatsManager.playerDatas.get(player.getUniqueId());
+				if (event.getSlot() == 31) {
+					event.getWhoClicked().openInventory(getSkillInventory(player));
 				}
 			}
 		}
 	}
 
-	public Inventory getInfoInventory(Player player) {
-		Inventory inv = Bukkit.createInventory(InvHolder.INSTANCE, 54, "法师职业信息");
-		inv.setContents(modelSkillInventory.getContents());
+	public static Inventory getInfoInventory(Player player) {
+		Inventory inv = Bukkit.createInventory(InfoInvHolder.INSTANCE, 54, "法师职业信息");
+		inv.setContents(modelInfoInventory.getContents());
 		for (int slot = 0; slot < 54; slot++) {
 			ItemStack item = inv.getItem(slot);
-			if(!item.hasItemMeta()) continue;
+			if (item == null)
+				continue;
+			if (!item.hasItemMeta())
+				continue;
 			ItemMeta meta = item.getItemMeta();
-			List<String> lore = meta.getLore();
-			for(int index=0;index<lore.size();index++) {
-				lore.set(index, PlaceholderAPI.setPlaceholders(player,lore.get(index)));
-			} 
+			if (meta.hasLore()) {
+				List<String> lore = meta.getLore();
+				for (int index = 0; index < lore.size(); index++) {
+					lore.set(index, PlaceholderAPI.setPlaceholders(player, lore.get(index)));
+				}
+				meta.setLore(lore);
+			}
+			item.setItemMeta(meta);
 		}
 		return inv;
 	}
-	
-	public Inventory getSkillInventory(StatsManager.Player$1 pl) {
-		Inventory inv = Bukkit.createInventory(InvHolder.INSTANCE, 54, "法师技能升级");
+
+	public static Inventory getSkillInventory(Player player) {
+		StatsManager.Player$1 pl = StatsManager.playerDatas.get(player.getUniqueId());
+		Inventory inv = Bukkit.createInventory(SkillInvHolder.INSTANCE, 54, "法师技能升级");
 		inv.setContents(modelSkillInventory.getContents());
 		List<String> infoLore = new ArrayList<String>();
-		infoLore.add("§7目前等级：§a" + this.getTotalLevel());
-		infoLore.add("§7目前专精：§a" + this.trainer.name);
+		infoLore.add("§7目前等级：§a%warlord_{archmage_level}%");
+		infoLore.add("§7目前选择：§a%warlord_{archmage_trainer}%");
+		infoLore.add("§7目前金币：§a%warlord_{money}%");
 		for (int slot = 0; slot < 9; slot++) {
 			ItemStack item = inv.getItem(slot);
 			ItemMeta meta = item.getItemMeta();
 			List<String> lore = meta.getLore();
-			if (this.sk1Level >= slot + 1) {
+			if (pl.archmage.sk1Level >= slot + 1) {
 				item.setDurability((short) 5);
 				lore.remove(8);
 			} else {
-				if (this.sk1Level + 1 == slot + 1
+				if (pl.archmage.sk1Level + 1 == slot + 1
 						&& pl.money >= Integer.valueOf(item.getItemMeta().getLore().get(8).replace("§7花费：§6", "")))
 					item.setDurability((short) 13);
 				lore.remove(9);
 			}
 			int specialIndex = -1;
-			switch (this.trainer) {
+			switch (pl.archmage.trainer) {
 			case BLAZE:
 				specialIndex = 2;
 				break;
@@ -212,8 +182,11 @@ public class ArchmageManager {
 				}
 				lore.set(index, line);
 			}
-			if (this.sk1Level == slot + 1) {
+			if (pl.archmage.sk1Level == slot + 1) {
 				infoLore.add(lore.get(specialIndex));
+			}
+			for (int index = 0; index < infoLore.size(); index++) {
+				infoLore.set(index, PlaceholderAPI.setPlaceholders(player, infoLore.get(index)));
 			}
 			meta.setLore(lore);
 			item.setItemMeta(meta);
@@ -233,9 +206,9 @@ public class ArchmageManager {
 		}
 	}
 
-	public static Inventory modelInfoInventory = Bukkit.createInventory(InvHolder.INSTANCE, 54, "法师职业信息");
-	public static Inventory modelSkillInventory = Bukkit.createInventory(InvHolder.INSTANCE, 54, "法师技能升级");
-	public static Inventory modelAttributeInventory = Bukkit.createInventory(InvHolder.INSTANCE, 54, "法师属性升级");
+	public static Inventory modelInfoInventory = Bukkit.createInventory(InfoInvHolder.INSTANCE, 45, "法师职业信息");
+	public static Inventory modelSkillInventory = Bukkit.createInventory(SkillInvHolder.INSTANCE, 54, "法师技能升级");
+	public static Inventory modelAttributeInventory = Bukkit.createInventory(SkillInvHolder.INSTANCE, 54, "法师属性升级");
 	public static HashMap<Integer, HashMap<String, Double>> sk1Figures = new HashMap<Integer, HashMap<String, Double>>();
 
 	public static void initAll() {
@@ -243,7 +216,7 @@ public class ArchmageManager {
 		initSkFigures();
 		initModelInfoInventory();
 		initModelSkillInventory();
-		Bukkit.getPluginManager().registerEvents(new ClickListener(), DarkArena.instance);
+		Bukkit.getPluginManager().registerEvents(new InventoryListener(), DarkArena.instance);
 	}
 
 	private static void initSkFigures() {
@@ -264,14 +237,15 @@ public class ArchmageManager {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("§a我的法师信息");
 		List<String> lore = new ArrayList<String>();
-		lore.add("§7目前等级：§a{currentLevel}");
+		lore.add("§7目前等级：§a%warlord_{archmage_level}%");
 		lore.add("");
-		lore.add("§7累计战绩：§6火焰§7|§5寒冰§7|§b水系§7法师");
-		lore.add("§7法师击杀数：§6%warlord_{blaze_kill}%§7|§5%warlord_{ice_kill}%§7|§b%warlord_{water_kill}%");
-		lore.add("§7法师总场数：§6%warlord_{blaze_arena}%§7|§5%warlord_{ice_arena}%§7|§b%warlord_{water_arena}%");
-		lore.add("§7法师总胜场：§6%warlord_{blaze_victory}%§7|§5%warlord_{ice_victory}%§7|§b%warlord_{water_victory}%");
-		lore.add("§7法师总输出：§6%warlord_{blaze_atk}%§7|§5%warlord_{ice_atk}%§7|§b%warlord_{water_atk}%");
-		lore.add("§7法师MVP数：§6%warlord_{blaze_mvp}%§7|§5%warlord_{ice_mvp}%§7|§b%warlord_{water_mvp}%");
+		lore.add("§7累计战绩：§6火焰§7 §l| §5寒冰§7 §l| §b水系§7法师");
+		lore.add("§7法师击杀数：§6%warlord_{blaze_kill}%§7 §l| §5%warlord_{ice_kill}%§7 §l| §b%warlord_{water_kill}%");
+		lore.add("§7法师总场数：§6%warlord_{blaze_arena}%§7 §l| §5%warlord_{ice_arena}%§7 §l| §b%warlord_{water_arena}%");
+		lore.add(
+				"§7法师总胜场：§6%warlord_{blaze_victory}%§7 §l| §5%warlord_{ice_victory}%§7 §l| §b%warlord_{water_victory}%");
+		lore.add("§7法师总输出：§6%warlord_{blaze_atk}%§7 §l| §5%warlord_{ice_atk}%§7 §l| §b%warlord_{water_atk}%");
+		lore.add("§7法师MVP数：§6%warlord_{blaze_mvp}%§7 §l| §5%warlord_{ice_mvp}%§7 §l| §b%warlord_{water_mvp}%");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		modelInfoInventory.setItem(13, item);
@@ -282,8 +256,8 @@ public class ArchmageManager {
 		lore = new ArrayList<String>();
 		lore.add("§7专精激活-你所驾驭的职业（巨量加成）");
 		lore.add("");
-		lore.add("§7目前选择的角色：§a{trainer}");
-		lore.add("§7专精角色：§a{mastery}");
+		lore.add("§7目前选择的角色：§a%warlord_{archmage_trainer}%");
+		lore.add("§7专精角色：§a%warlord_{archmage_mastery}%");
 		lore.add("");
 		lore.add("§a点击解锁或设置专精");
 		meta.setLore(lore);
@@ -335,11 +309,11 @@ public class ArchmageManager {
 		for (int slot = 0; slot < 9; slot++)
 			modelSkillInventory.setItem(slot + 36,
 					getSkItem(slot, costs[slot], "终极技能", "§7火焰法师：未开放", "§7寒冰法师：未开放", "§7水系法师：未开放"));
-		ItemStack close = new ItemStack(Material.ARROW);
-		ItemMeta meta = close.getItemMeta();
-		meta.setDisplayName("§6关闭界面");
-		close.setItemMeta(meta);
-		modelSkillInventory.setItem(48, close);
+		ItemStack back = new ItemStack(Material.ARROW);
+		ItemMeta meta = back.getItemMeta();
+		meta.setDisplayName("§6返回上一层");
+		back.setItemMeta(meta);
+		modelSkillInventory.setItem(48, back);
 		ItemStack info = new ItemStack(Material.EMERALD);
 		meta = info.getItemMeta();
 		meta.setDisplayName("§a个人信息");

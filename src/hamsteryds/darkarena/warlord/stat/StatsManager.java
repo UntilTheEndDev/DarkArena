@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import hamsteryds.darkarena.DarkArena;
+import hamsteryds.darkarena.warlord.stat.container.Archmage;
 
 public class StatsManager implements Listener {
 	public static class Player$1 {
@@ -28,11 +29,11 @@ public class StatsManager implements Listener {
 		public int currentPlayStreak;
 		public int highestPlayStreak;
 		public int money;
-		public ArchmageManager archmage;
+		public Archmage archmage;
 
 		public Player$1(int totalMatch, int totalVictory, int totalATK, int totalCure, int totalATKMVP,
 				int totalCureMVP, int totalKill, int currentPlayStreak, int highestPlayStreak, int money,
-				ArchmageManager archmage) {
+				Archmage archmage) {
 			this.totalMatch = totalMatch;
 			this.totalVictory = totalVictory;
 			this.totalATK = totalATK;
@@ -61,12 +62,12 @@ public class StatsManager implements Listener {
 		File file = new File(DarkArena.instance.getDataFolder() + "/playerdata/warlord/", uuid.toString() + ".yml");
 
 		YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-		Player$1 data = new Player$1(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new ArchmageManager());
+		Player$1 data = new Player$1(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new Archmage());
 		if (file.exists())
 			data = new Player$1(yaml.getInt("totalMatch"), yaml.getInt("totalVictory"), yaml.getInt("totalATK"),
 					yaml.getInt("totalCure"), yaml.getInt("totalATKMVP"), yaml.getInt("totalCureMVP"),
 					yaml.getInt("totalKill"), yaml.getInt("currentPlayStreak"), yaml.getInt("highestPlayStreak"),
-					yaml.getInt("money"), new ArchmageManager(
+					yaml.getInt("money"), new Archmage(
 							yaml.getInt("archmage.sk1Level"), yaml.getInt("archmage.sk2Level"), yaml.getInt("archmage.sk3Level"),
 							yaml.getInt("archmage.sk4Level"), yaml.getInt("archmage.sk5Level"), yaml.getInt("archmage.attrib1Level"),
 							yaml.getInt("archmage.attrib2Level"), yaml.getInt("archmage.attrib3Level"), yaml.getInt("archmage.attrib4Level"),
@@ -75,7 +76,6 @@ public class StatsManager implements Listener {
 							yaml.getIntegerList("archmage.iceStats"),
 							yaml.getIntegerList("archmage.waterStats")));
 		playerDatas.put(uuid, data);
-		saveData(player);
 	}
 
 	public static void saveData(Player player) {
@@ -107,7 +107,6 @@ public class StatsManager implements Listener {
 		yaml.set("archmage.attrib5Level", data.archmage.attrib5Level);
 		yaml.set("archmage.trainer", data.archmage.trainer.toString());
 		yaml.set("archmage.mastery", data.archmage.mastery.toString());
-		
 		yaml.set("archmage.blazeStats", data.archmage.blazeStats);
 		yaml.set("archmage.iceStats", data.archmage.iceStats);
 		yaml.set("archmage.waterStats", data.archmage.waterStats);
@@ -126,7 +125,7 @@ public class StatsManager implements Listener {
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		loadData(event.getPlayer());
+		saveData(event.getPlayer());
 	}
 
 	public static void saveAll() {

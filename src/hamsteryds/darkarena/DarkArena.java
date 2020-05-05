@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,6 +17,8 @@ import hamsteryds.darkarena.warlord.WarlordManager;
 import hamsteryds.darkarena.warlord.listener.PlayerListener;
 import hamsteryds.darkarena.warlord.stat.ArchmageManager;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
+import hamsteryds.darkarena.warlord.stat.container.Archmage.ChangeType;
+import hamsteryds.darkarena.warlord.stat.container.Archmage.VariableType;
 import hamsteryds.darkarena.warlord.util.WarlordTeam.TeamType;
 
 public class DarkArena extends JavaPlugin {
@@ -81,11 +84,40 @@ public class DarkArena extends JavaPlugin {
 				}
 				if(contents[0].equals("archmage")) {
 					StatsManager.Player$1 pl=StatsManager.playerDatas.get(player.getUniqueId());
-					player.openInventory(pl.archmage.getInfoInventory(player));
+					player.openInventory(ArchmageManager.getInfoInventory(player));
 				}
-				if(contents[0].equals("archmagelevel")) {
-					StatsManager.Player$1 pl=StatsManager.playerDatas.get(player.getUniqueId());
-					player.openInventory(pl.archmage.getSkillInventory(pl));
+				if(contents[0].equals("money")) {
+					Player changee=Bukkit.getPlayer(contents[2]);
+					if(changee==null)
+						return true;
+					StatsManager.Player$1 pl=StatsManager.playerDatas.get(changee.getUniqueId());
+					switch(contents[1]) {
+					case "give":
+						pl.money+=Integer.valueOf(contents[3]);
+						player.sendMessage("§6[战争领主]§r成功给予玩家§a"+contents[2]+"§r金币§a"+contents[3]+"§r个");
+						changee.sendMessage("§6[战争领主]§r您的账户上添加了§a"+contents[3]+"§r个金币");
+						break;
+					case "take":
+						pl.money-=Integer.valueOf(contents[3]);
+						player.sendMessage("§6[战争领主]§r成功扣除玩家§a"+contents[2]+"§r金币§a"+contents[3]+"§r个");
+						changee.sendMessage("§6[战争领主]§r您的账户上扣除了§a"+contents[3]+"§r个金币");
+						break;
+					case "set":
+						pl.money=Integer.valueOf(contents[3]);
+						player.sendMessage("§6[战争领主]§r成功设置玩家§a"+contents[2]+"§r金币为§a"+contents[3]+"§r个");
+						changee.sendMessage("§6[战争领主]§r您的账户被设置为了§a"+contents[3]+"§r个金币");
+						break;
+					default:
+						break;
+					}
+				}
+				if(contents[0].equals("modify")) {
+					Player changee=Bukkit.getPlayer(contents[1]);
+					if(changee==null)
+						return true;
+					StatsManager.Player$1 pl=StatsManager.playerDatas.get(changee.getUniqueId());
+					pl.archmage.changeLevel(VariableType.valueOf(contents[2]),ChangeType.valueOf(contents[3]),Integer.valueOf(contents[4]));
+					player.sendMessage("§6[战争领主]§r修改玩家等级成功"); 
 				}
 			}
 		}
