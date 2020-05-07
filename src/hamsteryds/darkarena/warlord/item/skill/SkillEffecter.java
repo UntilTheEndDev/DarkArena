@@ -1,4 +1,4 @@
-package hamsteryds.darkarena.warlord.item.skill.archmage;
+package hamsteryds.darkarena.warlord.item.skill;
 
 import java.util.HashMap;
 
@@ -15,7 +15,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.WarlordManager;
-import hamsteryds.darkarena.warlord.item.skill.NormalSkill;
+import hamsteryds.darkarena.warlord.item.skill.archmage.Skill2;
+import hamsteryds.darkarena.warlord.item.skill.archmage.Skill3;
 import hamsteryds.darkarena.warlord.item.skill.archmage.blaze.BlazeNormalAttack;
 import hamsteryds.darkarena.warlord.item.skill.archmage.blaze.BlazeSkill1;
 import hamsteryds.darkarena.warlord.item.skill.archmage.blaze.BlazeSkill4;
@@ -127,4 +128,17 @@ public class SkillEffecter implements Listener {
 			}
 		}.runTaskTimer(DarkArena.instance, 0L, 20L);
 	}
+	
+	public class NormalSkill {
+		public String name;
+		public int minusPP;
+		public int cooldown;
+		public NormalSkill(String name, int minusPP, int cooldown) {
+			this.name = name;
+			this.minusPP = minusPP;
+			this.cooldown = cooldown;
+		}
+		
+	}
+
 }

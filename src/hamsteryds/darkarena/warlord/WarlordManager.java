@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import hamsteryds.darkarena.DarkArena;
 import hamsteryds.darkarena.warlord.item.KitsManager;
-import hamsteryds.darkarena.warlord.item.skill.archmage.SkillEffecter;
+import hamsteryds.darkarena.warlord.item.skill.SkillEffecter;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.task.CompassTargeter;
 import hamsteryds.darkarena.warlord.task.FlagGlowingSetter;
