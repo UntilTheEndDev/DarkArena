@@ -18,6 +18,7 @@ import hamsteryds.darkarena.warlord.WarlordManager;
 import hamsteryds.darkarena.warlord.item.KitsManager;
 import hamsteryds.darkarena.warlord.listener.PlayerListener;
 import hamsteryds.darkarena.warlord.stat.ArchmageManager;
+import hamsteryds.darkarena.warlord.stat.ChartManager;
 import hamsteryds.darkarena.warlord.stat.StatsManager;
 import hamsteryds.darkarena.warlord.stat.container.Archmage.ChangeType;
 import hamsteryds.darkarena.warlord.stat.container.Archmage.VariableType;
@@ -44,6 +45,8 @@ public class DarkArena extends JavaPlugin {
 		ArchmageManager.initAll();
 		
 		KitsManager.initAll();
+		
+		new ChartManager();
 		
 		checkUpdate();
 	}
